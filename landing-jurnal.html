@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Jurnal - Rancang Bangun Aplikasi Chatbot pada Catering Makanan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header: Identitas & Judul Jurnal -->
+  <header>
+    <p class="journal-badge">Jurnal Dialektika Informatika (Detika) • Vol. 6, No. 1 (Desember 2025)</p>
+    <h1>Rancang Bangun Aplikasi Chatbot pada Catering Makanan</h1>
+    <p class="journal-authors">Nugroho Aji Wicaksono &amp; Rina Fiati — Universitas Muria Kudus</p>
+
+    <!-- Navigasi Internal Berbasis Tag Semantic <nav> -->
+    <nav aria-label="Navigasi Utama">
+      <ul>
+        <li><a href="index.html">🏠 Beranda (Homepage)</a></li>
+        <li><a href="#about">Ringkasan Jurnal</a></li>
+        <li><a href="#novelty">Novelty</a></li>
+        <li><a href="#kekuatan">Kekuatan</a></li>
+        <li><a href="#kekurangan">Kekurangan</a></li>
+        <li><a href="#anggota">Anggota Kelompok</a></li>
+        <li><a href="landing-layanan.html">🍱 Landing Layanan</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main: Pembungkus Konten Utama -->
+  <main>
+    <!-- Section 1: About / Ringkasan Jurnal -->
+    <section id="about">
+      <h2>Ringkasan Jurnal</h2>
+      <article>
+        <header>
+          <h3>Informasi Publikasi &amp; Metadata</h3>
+          <dl class="meta-grid">
+            <dt>Judul Artikel</dt>
+            <dd>Rancang Bangun Aplikasi Chatbot pada Catering Makanan</dd>
+            <dt>Penulis</dt>
+            <dd>Nugroho Aji Wicaksono (1202151027@std.umk.ac.id) &amp; Rina Fiati (rina.fiati@umk.ac.id)</dd>
+            <dt>Institusi / Afiliasi</dt>
+            <dd>Program Studi Teknik Informatika, Fakultas Teknik, Universitas Muria Kudus</dd>
+            <dt>Publikasi &amp; Waktu</dt>
+            <dd>Jurnal Dialektika Informatika (Detika), Vol. 6, No. 1, Desember 2025, hlm. 6–11</dd>
+            <dt>Identifikasi</dt>
+            <dd>DOI: 10.24176/detika.v6i1.15814 | p-ISSN: 2746-2811 | e-ISSN: 2774-2148</dd>
+            <dt>Studi Kasus</dt>
+            <dd>UMKM Catering Bu Sumiyati</dd>
+          </dl>
+        </header>
+
+        <section class="summary-content">
+          <h4>Latar Belakang &amp; Permasalahan</h4>
+          <p>
+            Sektor Usaha Mikro, Kecil, dan Menengah (UMKM) katering makanan menghadapi tantangan berat
+            dalam menyediakan layanan pelanggan yang responsif dan siaga setiap saat (24/7). Menurut survei
+            dalam literatur, sekitar 78% UMKM kewalahan melayani pertanyaan pelanggan secara konstan
+            karena keterbatasan staf (SDM) dan tingginya beban biaya operasional. Kelambatan dalam merespons
+            pertanyaan seputar menu, ketersediaan jadwal, harga, maupun pemesanan berdampak langsung pada
+            turunnya kepuasan dan loyalitas calon pembeli.
+          </p>
+
+          <h4>Solusi &amp; Pendekatan yang Diajukan</h4>
+          <p>
+            Penelitian ini mengembangkan aplikasi chatbot cerdas berbasis web yang dirancang khusus untuk
+            kebutuhan operasional UMKM katering. Sistem menggabungkan pendekatan <em>rule-based system</em>
+            untuk alur FAQ rutin dan formulir pemesanan pesanan, dengan <em>Natural Language Processing (NLP)</em>
+            berbasis algoritma <strong>Naïve Bayes</strong> untuk klasifikasi maksud pengguna (<em>intent classification</em>)
+            dan pengenalan entitas (<em>entity recognition</em>).
+          </p>
+
+          <h4>Metodologi Pengembangan</h4>
+          <p>
+            Pengembangan sistem mengadopsi kerangka kerja <strong>Scrum</strong> dengan siklus <em>sprint</em> berdurasi
+            2 hingga 4 minggu (perencanaan, sprint backlog, perancangan, review, dan retrospective). Sistem dibangun
+            dengan arsitektur 4 lapisan terpisah (<em>Layered Architecture</em>):
+          </p>
+          <ol>
+            <li><strong>User Interface Layer:</strong> Antarmuka obrolan widget responsif berbasis web browser serta dashboard manajemen.</li>
+            <li><strong>Processing Layer:</strong> Mesin pemrosesan teks hibrida (Rule-based Engine + NLP Naïve Bayes Classifier + Dialog Manager).</li>
+            <li><strong>Data Layer:</strong> Database penyimpanan daftar menu katering, riwayat interaksi pelanggan, template jawaban, dan basis pengetahuan.</li>
+            <li><strong>Integration Layer:</strong> API Gateway untuk menghubungkan layanan ke kanal eksternal seperti WhatsApp Messenger dan sistem pendukung lainnya.</li>
+          </ol>
+        </section>
+      </article>
+    </section>
+
+    <!-- Section 2: Novelty (Kebaruan Penelitian) -->
+    <section id="novelty">
+      <h2>Novelty (Kebaruan Penelitian)</h2>
+      <article>
+        <p>
+          Aspek kebaruan (<em>novelty</em>) utama yang membedakan penelitian ini dari penelitian-penelitian chatbot pada umumnya adalah:
+        </p>
+        <ul class="feature-list">
+          <li>
+            <strong>Arsitektur Hibrida Rule-Based &amp; NLP Naïve Bayes untuk Domain Katering:</strong>
+            Sebagian besar sistem pada UMKM katering hanya mengandalkan menu kaku (rule-based button saja)
+            atau sebaliknya NLP generik tanpa konteks alur transaksi. Penelitian ini mengintegrasikan keduanya:
+            pertanyaan variatif diproses via NLP Naïve Bayes dengan pembobotan kata <em>TF-IDF vectorization</em>,
+            sementara alur pemesanan dikawal melalui form order terstruktur dengan verifikasi input otomatis.
+          </li>
+          <li>
+            <strong>Integrasi Alur Pemesanan Langsung Tanpa Aplikasi Tambahan:</strong>
+            Pelanggan tidak diwajibkan mengunduh aplikasi tersendiri; sistem berjalan langsung di peramban web
+            bawaan (<em>browser-native</em>) baik di Android maupun iOS dengan tombol chatbot terapung di dashboard,
+            serta dirancang siap dihubungkan ke WhatsApp API sebagai saluran komunikasi paling populer di kalangan konsumen UMKM Indonesia.
+          </li>
+          <li>
+            <strong>Metrik Kinerja Terverifikasi untuk Skala UMKM:</strong>
+            Penelitian ini membuktikan bahwa pendekatan terjangkau dan ringan (<em>lightweight</em>) mampu menghasilkan
+            akurasi klasifikasi <strong>87%</strong> dengan rata-rata kecepatan respon <strong>2,3 detik</strong>,
+            memangkas beban kerja customer service manual hingga 40% dan menaikkan efisiensi operasional hingga 60%.
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Section 3: Kekuatan Jurnal -->
+    <section id="kekuatan">
+      <h2>Kekuatan Jurnal</h2>
+      <article>
+        <p>Berdasarkan telaah metodologi, implementasi, dan pengujian, berikut kekuatan utama jurnal ini:</p>
+        <ul class="strength-list">
+          <li>
+            <strong>Metodologi Pengembangan Jelas &amp; Terstruktur:</strong>
+            Penerapan metodologi <em>Scrum</em> dengan siklus sprint teratur membuat proses perancangan sistem
+            adaptif terhadap kebutuhan mitra UMKM. Arsitektur 4-lapisan (UI, Processing, Data, Integration) sangat modular
+            dan mudah dipelihara.
+          </li>
+          <li>
+            <strong>Pengujian Sistem Menyeluruh (Tri-Testing Approach):</strong>
+            Penulis tidak hanya menguji dari satu sudut pandang, melainkan menggabungkan tiga dimensi evaluasi:
+            <em>Whitebox Testing</em> (logika algoritma &amp; kode), <em>Blackbox Testing</em> (fungsionalitas, performa,
+            dan akurasi intent), serta <em>User Acceptance Testing (UAT)</em> dengan respon riil pengguna katering.
+          </li>
+          <li>
+            <strong>Tingkat Keterpakaian Tinggi &amp; Hemat Sumber Daya:</strong>
+            Spesifikasi perangkat keras yang dibutuhkan sangat ringan (RAM 1–2 GB pada Android/iOS) dan tidak mewajibkan
+            instalasi aplikasi baru, sehingga ramah terhadap berbagai lapisan masyarakat tanpa hambatan teknis.
+          </li>
+          <li>
+            <strong>Penyajian Alur Kerja Jelas:</strong>
+            Dilengkapi dengan diagram alur (<em>flowchart</em>) pemrosesan pertanyaan umum dan alur validasi formulir pemesanan,
+            sehingga alur logika sistem dapat dipahami secara transparan.
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Section 4: Kekurangan Jurnal -->
+    <section id="kekurangan">
+      <h2>Kekurangan &amp; Keterbatasan Jurnal</h2>
+      <article>
+        <p>Beberapa aspek keterbatasan dan kelemahan yang ditemukan pada jurnal ini meliputi:</p>
+        <ul class="weakness-list">
+          <li>
+            <strong>Kapasitas NLU Relatif Sederhana:</strong>
+            Penggunaan algoritma Naïve Bayes klasik dengan TF-IDF rentan mengalami misklasifikasi jika pelanggan
+            menggunakan variasi bahasa daerah (slang lokal), singkatan informal yang tidak ada di korpus latih,
+            atau kalimat bertingkat dengan konteks ganda dibanding model berbasis Transformer/LLM modern.
+          </li>
+          <li>
+            <strong>Ruang Lingkup Sampel Pengujian Terbatas:</strong>
+            Uji coba implementasi hanya berfokus pada satu mitra UMKM (Catering Bu Sumiyati) dengan variasi menu
+            dan volume transaksi tertentu, sehingga belum menguji ketahanan sistem terhadap beban lonjakan pesanan massal (<em>scalability test</em>).
+          </li>
+          <li>
+            <strong>Integrasi Inventori &amp; Gateway Pembayaran Masih Berupa Rencana Masa Depan:</strong>
+            Sistem belum terhubung secara <em>real-time</em> langsung dengan stok bahan baku katering maupun gerbang
+            pembayaran otomatis (payment gateway digital), sehingga proses finalisasi pembayaran dan konfirmasi stok
+            masih memerlukan tindak lanjut manual oleh pengelola.
+          </li>
+          <li>
+            <strong>Format Penulisan Bagian Tinjauan Pustaka:</strong>
+            Pada Bagian 4 artikel jurnal, pembahasan studi literatur disajikan dalam format enumerasi artikel demi artikel
+            (ringkasan satu per satu dari penelitian 1 hingga 10) alih-alih sintesis perbandingan kritis (<em>critical literature synthesis</em>)
+            yang membandingkan posisi riset ini secara langsung dengan penelitian terdahulu.
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Section 5: Anggota Kelompok -->
+    <section id="anggota">
+      <h2>Anggota Kelompok</h2>
+      <article>
+        <p class="section-intro">Kelompok Penugasan Praktikum &amp; Teori Pemrograman Berbasis Web (PAW):</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Nama Mahasiswa</th>
+                <th scope="col">NIM</th>
+                <th scope="col">Peran / Kontribusi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Ilham Fadhilah</strong></td>
+                <td>20200140100</td>
+                <td>Analisis Novelty, Struktur Semantic HTML &amp; Dokumentasi</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Danar Rohman Rozaqi</strong></td>
+                <td>20240140233</td>
+                <td>Analisis Kekuatan &amp; Kekurangan Jurnal</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>M.Ikhlasul</strong></td>
+                <td>20240140234</td>
+                <td>Penyusunan Konten Ringkasan &amp; Styling CSS Minimal</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Anandya Arlys F</strong></td>
+                <td>20240140002</td>
+                <td>Pengembangan dan Penyempurnaan Halaman Web</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          <small>* Data anggota kelompok telah disesuaikan untuk pengumpulan akhir di MyKlass.</small>
+        </p>
+      </article>
+    </section>
+
+    <!-- Aside: Informasi Pendukung & Catatan Teknis -->
+    <aside aria-labelledby="aside-title">
+      <h3 id="aside-title">Catatan Tambahan &amp; Tautan Dokumen</h3>
+      <ul>
+        <li><strong>Berkas Sumber Jurnal:</strong> <code>detika,+15814_page6-11.pdf</code></li>
+        <li><strong>Mata Kuliah:</strong> Pemrograman Berbasis Web (PAW) — Semester Ganjil</li>
+        <li><strong>Format Standar Repositori GitHub:</strong> <code>PAW-Week2-Kelompok[no kelompok]-Kelas[alfabet]</code></li>
+        <li><strong>Fokus Penilaian:</strong> Keaslian dan ketepatan struktur semantic HTML5 (bukan kerumitan CSS/JS).</li>
+      </ul>
+    </aside>
+  </main>
+
+  <!-- Footer: Keterangan Hak Cipta & Mata Kuliah -->
+  <footer>
+    <p>&copy; 2025/2026 Tugas Kelompok Pemrograman Berbasis Web (PAW).</p>
+    <p>Landing page ini disusun untuk memenuhi tugas sesi teori dan praktikum HTML Semantic.</p>
+  </footer>
+</body>
+</html>
