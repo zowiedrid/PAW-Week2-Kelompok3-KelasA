@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wireframe low-fidelity 3 halaman CateringBot: Beranda, Chatbot Pemesanan, Ringkasan & Konfirmasi.">
+  <title>3. Wireframe 3 Halaman — UI/UX CateringBot Kelompok 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uiux.css">
+  <style>
+    .wf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+    .wf-col { display: flex; flex-direction: column; align-items: center; }
+    .wf-title { width: 100%; max-width: 320px; margin-bottom: .75rem; }
+    .wf-title .tag { margin: 0; }
+    .wf-title h3 { font-size: 1.05rem; color: var(--navy); margin-top: .3rem; }
+    .notes { width: 100%; max-width: 340px; margin-top: 1rem; }
+    .notes li { display: flex; gap: .5rem; font-size: .88rem; padding: .45rem 0; border-bottom: 1px dashed var(--border); }
+    .notes li small { display: block; color: var(--muted); }
+    .wf-phone .pin { position: absolute; }
+    .rel { position: relative; }
+    .goto { font-size: 10px; color: var(--wf-line); text-align: right; }
+    @media (max-width: 1100px) { .wf-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div class="inner">
+      <span class="crumb">Praktikum 4 · UI/UX · Tahap 3 dari 4</span>
+      <h1>Wireframe 3 Halaman (Low-Fidelity, Mobile-First)</h1>
+      <p>Tiga halaman yang dilalui user flow: <b>Beranda → Chatbot Pemesanan → Ringkasan &amp; Konfirmasi</b>. Dibuat grayscale agar penilaian fokus pada struktur dan tata letak, bukan warna. Ukuran layar mobile karena Dewi memesan dari HP.</p>
+      <nav class="step-nav" aria-label="Tahapan UI/UX">
+        <a href="../index.html">🌐 Web Utama</a>
+        <a href="index.html">🏠 Hub UI/UX</a>
+        <a href="persona.html">1. Persona</a>
+        <a href="user-flow.html">2. User Flow</a>
+        <a href="wireframe.html" class="active">3. Wireframe</a>
+        <a href="prototype.html">4. Prototype</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="callout blue" style="margin-bottom:1.5rem;">
+      Lingkaran kuning <span class="pin">1</span> menandai elemen yang dijelaskan di bawah tiap wireframe, lengkap dengan alasan desain dan pain point (P1–P5) dari
+      <a href="persona.html">halaman Persona</a>.
+    </div>
+
+    <div class="wf-grid">
+      <!-- ================= WIREFRAME 1: BERANDA ================= -->
+      <section class="wf-col" aria-labelledby="wf1">
+        <div class="wf-title"><span class="tag">Halaman 1</span><h3 id="wf1">Beranda</h3><p class="muted" style="font-size:.85rem;">User flow langkah 1–2</p></div>
+        <div class="wf-phone">
+          <div class="wf-notch"></div>
+          <div class="wf-bar"><span>[LOGO] CateringBot</span><span>☰</span></div>
+
+          <div class="wf-box fill rel">
+            <span class="pin" style="right:-4px; top:-8px;">1</span>
+            <div class="wf-h">Pesan Katering Tanpa Menunggu Balasan Admin</div>
+            <div class="wf-line w80"></div>
+            <div class="wf-line w60"></div>
+            <div class="wf-btn">💬 PESAN VIA CHATBOT</div>
+            <div class="wf-btn ghost">Lihat Menu &amp; Harga</div>
+          </div>
+
+          <div class="wf-row rel" style="margin-bottom:8px; text-align:center; font-size:10px;">
+            <span class="pin" style="left:-6px; top:-8px;">2</span>
+            <div class="wf-box" style="margin:0;">⚡ Respon<br>2,3 dtk</div>
+            <div class="wf-box" style="margin:0;">🕘 Buka<br>24 jam</div>
+            <div class="wf-box" style="margin:0;">📱 Tanpa<br>install</div>
+          </div>
+
+          <div class="wf-h rel">Paket Populer <span class="pin" style="position:relative; margin-left:4px;">3</span></div>
+          <div class="wf-row">
+            <div class="wf-box" style="padding:6px;">
+              <div class="wf-img" style="height:50px;"></div>
+              <b>Nasi Kotak</b><br>Rp25.000/porsi<br><small>min. 20 porsi</small>
+              <div class="wf-btn" style="padding:4px;">Pesan</div>
+            </div>
+            <div class="wf-box" style="padding:6px;">
+              <div class="wf-img" style="height:50px;"></div>
+              <b>Prasmanan</b><br>Rp55.000/porsi<br><small>min. 50 porsi</small>
+              <div class="wf-btn" style="padding:4px;">Pesan</div>
+            </div>
+          </div>
+          <div class="goto">geser untuk paket lain →</div>
+
+          <div class="wf-box dashed rel">
+            <span class="pin" style="right:-4px; top:-8px;">4</span>
+            <b>Cara Pesan 3 Langkah</b>
+            <div>① Pilih paket ② Atur porsi &amp; tanggal ③ Kirim</div>
+          </div>
+          <div class="wf-fab">💬</div>
+          <span class="pin" style="right:56px; bottom:28px;">5</span>
+        </div>
+        <ol class="notes" style="list-style:none;">
+          <li><span class="pin">1</span><div><b>Headline + CTA utama di atas lipatan</b><small>Menjawab langsung keluhan "menunggu admin" (P1). Satu aksi utama yang jelas, aksi sekunder dibuat outline.</small></div></li>
+          <li><span class="pin">2</span><div><b>Trust strip 3 poin</b><small>Meyakinkan pesanan diproses cepat tanpa aplikasi (P1, P5). Angka diambil dari hasil riset jurnal.</small></div></li>
+          <li><span class="pin">3</span><div><b>Kartu paket dengan harga &amp; min. order</b><small>Harga terlihat sebelum bertanya (P2). Tombol "Pesan" langsung membawa ke chatbot dengan paket terpilih (jalan pintas user flow).</small></div></li>
+          <li><span class="pin">4</span><div><b>Cara pesan 3 langkah</b><small>Menjelaskan apa yang akan terjadi agar Dewi tidak ragu memulai.</small></div></li>
+          <li><span class="pin">5</span><div><b>Tombol chat mengambang</b><small>Chatbot bisa dibuka dari posisi scroll mana pun, dalam jangkauan ibu jari.</small></div></li>
+        </ol>
+      </section>
+
+      <!-- ================= WIREFRAME 2: CHATBOT ================= -->
+      <section class="wf-col" aria-labelledby="wf2">
+        <div class="wf-title"><span class="tag">Halaman 2</span><h3 id="wf2">Chatbot Pemesanan</h3><p class="muted" style="font-size:.85rem;">User flow langkah 3–5</p></div>
+        <div class="wf-phone">
+          <div class="wf-notch"></div>
+          <div class="wf-bar"><span>← Asisten Bu Sumiyati</span><span>● online</span></div>
+
+          <div class="wf-stepper rel">
+            <span class="pin" style="right:-6px; top:-10px;">1</span>
+            <span class="on">Paket</span><span class="on">Porsi</span><span>Tanggal</span><span>Alamat</span>
+          </div>
+
+          <div class="wf-bubble">Halo! Mau pesan paket apa?</div>
+          <div class="rel">
+            <span class="pin" style="right:-4px; top:-6px;">2</span>
+            <span class="wf-chip">Nasi Kotak</span><span class="wf-chip">Prasmanan</span><span class="wf-chip">Tumpeng</span><span class="wf-chip">Snack Box</span>
+          </div>
+          <div class="wf-bubble me">Nasi Kotak</div>
+          <div class="wf-bubble">Berapa porsi? (min. 20)</div>
+
+          <div class="wf-box rel">
+            <span class="pin" style="right:-4px; top:-8px;">3</span>
+            <div class="wf-row" style="text-align:center;">
+              <div class="wf-btn ghost" style="margin:0;">−</div>
+              <div style="font-size:16px; font-weight:700;">40</div>
+              <div class="wf-btn ghost" style="margin:0;">+</div>
+            </div>
+            <div class="wf-kv"><span>Subtotal</span><b>Rp1.000.000</b></div>
+            <small>⚠ muncul jika &lt; 20: "Minimal 20 porsi"</small>
+            <div class="wf-btn">Lanjut</div>
+          </div>
+
+          <div class="wf-bubble">Untuk tanggal berapa?</div>
+          <div class="rel">
+            <span class="pin" style="right:-4px; top:-6px;">4</span>
+            <span class="wf-chip">Jum 16 · ✓</span><span class="wf-chip">Sab 17 · ✓</span><span class="wf-chip off">Min 18 · Penuh</span>
+          </div>
+
+          <div class="wf-input rel" style="margin-top:14px;">
+            <span class="pin" style="right:-4px; top:-10px;">5</span>
+            Ketik pertanyaan atau alamat… [Kirim]
+          </div>
+        </div>
+        <ol class="notes" style="list-style:none;">
+          <li><span class="pin">1</span><div><b>Progress stepper</b><small>Dewi tahu sisa langkah, sehingga percakapan terasa terarah, tidak seperti chat tanpa ujung.</small></div></li>
+          <li><span class="pin">2</span><div><b>Quick-reply chip</b><small>Memilih dengan tap, bukan mengetik (kesabaran mengetik rendah). Sesuai sistem rule-based pada jurnal.</small></div></li>
+          <li><span class="pin">3</span><div><b>Stepper porsi + subtotal + validasi</b><small>Harga dihitung langsung (P2). Batas minimal dicegah di tempat sehingga tidak ada pesanan gagal (P4).</small></div></li>
+          <li><span class="pin">4</span><div><b>Chip tanggal dengan status</b><small>Ketersediaan terlihat sebelum Dewi mengisi data lain (P3). Tanggal penuh dicoret dan nonaktif.</small></div></li>
+          <li><span class="pin">5</span><div><b>Kolom ketik tetap tersedia</b><small>Untuk alamat dan pertanyaan bebas yang ditangani NLP Naïve Bayes; pengguna tidak terkunci di pilihan.</small></div></li>
+        </ol>
+      </section>
+
+      <!-- ================= WIREFRAME 3: RINGKASAN ================= -->
+      <section class="wf-col" aria-labelledby="wf3">
+        <div class="wf-title"><span class="tag">Halaman 3</span><h3 id="wf3">Ringkasan &amp; Konfirmasi</h3><p class="muted" style="font-size:.85rem;">User flow langkah 6–7</p></div>
+        <div class="wf-phone">
+          <div class="wf-notch"></div>
+          <div class="wf-bar"><span>← Ringkasan Pesanan</span><span></span></div>
+
+          <div class="wf-box rel">
+            <span class="pin" style="right:-4px; top:-8px;">1</span>
+            <div class="wf-row"><b>Nasi Kotak Reguler</b><span style="text-align:right; text-decoration:underline;">Ubah</span></div>
+            <div class="wf-kv"><span>40 porsi × Rp25.000</span><span>Rp1.000.000</span></div>
+            <div class="wf-kv"><span>Ongkos kirim</span><span>Rp0</span></div>
+            <div class="wf-total"><span>TOTAL</span><span>Rp1.000.000</span></div>
+            <div class="wf-kv"><span>DP 30%</span><span>Rp300.000</span></div>
+          </div>
+
+          <div class="wf-box rel">
+            <span class="pin" style="right:-4px; top:-8px;">2</span>
+            <div class="wf-row"><b>📅 Sabtu, 17 Okt · 11.00</b><span style="text-align:right; text-decoration:underline;">Ubah</span></div>
+            <div class="wf-row"><span>📍 Jl. Sunan Muria 12, Kudus</span><span style="text-align:right; text-decoration:underline;">Ubah</span></div>
+          </div>
+
+          <div class="wf-box rel">
+            <span class="pin" style="right:-4px; top:-8px;">3</span>
+            <b>Data Pemesan</b>
+            <div class="wf-input">Nama lengkap</div>
+            <div class="wf-input">No. WhatsApp (08…)</div>
+            <div class="wf-input">Catatan (opsional)</div>
+          </div>
+
+          <div class="rel" style="margin:6px 0;">
+            <span class="pin" style="right:-4px; top:-8px;">4</span>
+            ☐ Saya setuju membayar DP 30% setelah dikonfirmasi admin
+          </div>
+
+          <div class="rel">
+            <span class="pin" style="right:-4px; top:-4px;">5</span>
+            <div class="wf-btn">KIRIM PESANAN KE WHATSAPP</div>
+            <div class="wf-btn ghost">Kembali ke Chat</div>
+          </div>
+
+          <div class="wf-box dashed fill rel" style="margin-top:10px; text-align:center;">
+            <span class="pin" style="right:-4px; top:-8px;">6</span>
+            <b>[ STATE SETELAH KIRIM ]</b><br>✓ Pesanan terkirim<br>No. Pesanan: ORD-XXXX<br><small>Admin konfirmasi ≤ 15 menit via WA</small>
+          </div>
+        </div>
+        <ol class="notes" style="list-style:none;">
+          <li><span class="pin">1</span><div><b>Rincian biaya transparan</b><small>Total dan DP siap dilaporkan Dewi ke bagian keuangan (Goal, P2).</small></div></li>
+          <li><span class="pin">2</span><div><b>Jadwal &amp; alamat dengan tombol "Ubah"</b><small>Semua data di satu tempat dan mudah dikoreksi tanpa mengulang dari awal (P4).</small></div></li>
+          <li><span class="pin">3</span><div><b>Data pemesan diminta paling akhir</b><small>Data pribadi diminta setelah Dewi yakin harga dan tanggal cocok, mengurangi keraguan di awal.</small></div></li>
+          <li><span class="pin">4</span><div><b>Persetujuan DP</b><small>Ekspektasi pembayaran jelas sejak awal; tombol Kirim aktif setelah dicentang.</small></div></li>
+          <li><span class="pin">5</span><div><b>CTA "Kirim ke WhatsApp"</b><small>Konfirmasi berlanjut di aplikasi yang sudah dipercaya Dewi (P5). Admin menerima pesanan lengkap (persona sekunder).</small></div></li>
+          <li><span class="pin">6</span><div><b>Status berhasil + nomor pesanan</b><small>Bukti pesanan yang jelas dan perkiraan waktu konfirmasi, menutup kekhawatiran P1.</small></div></li>
+        </ol>
+      </section>
+    </div>
+
+    <h2 class="sec"><span class="num">✓</span> Keterhubungan dengan User Flow</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Wireframe</th><th>Langkah user flow</th><th>Elemen pemicu perpindahan</th><th>Tujuan</th></tr></thead>
+        <tbody>
+          <tr><td>Beranda</td><td>1–2</td><td>"Pesan via Chatbot" / "Pesan" di kartu paket / tombol chat mengambang</td><td>Chatbot Pemesanan</td></tr>
+          <tr><td>Chatbot Pemesanan</td><td>3–5</td><td>"Lihat Ringkasan Pesanan" (muncul setelah alamat diisi)</td><td>Ringkasan &amp; Konfirmasi</td></tr>
+          <tr><td>Ringkasan &amp; Konfirmasi</td><td>6–7</td><td>"Ubah" / "Kembali ke Chat" → Chatbot; "Kirim" → state berhasil → "Kembali ke Beranda"</td><td>Selesai</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <a class="next-link" href="prototype.html">Lanjut ke 4. Prototype Klik →</a>
+  </main>
+
+  <footer class="doc-footer">Praktikum 4 PAW · Kelompok 3 Kelas A · CateringBot Catering Bu Sumiyati</footer>
+</body>
+</html>

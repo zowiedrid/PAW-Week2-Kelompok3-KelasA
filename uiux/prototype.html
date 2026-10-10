@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prototype klik CateringBot berbasis wireframe: Beranda, Chatbot Pemesanan, Ringkasan & Konfirmasi.">
+  <title>4. Prototype Klik — UI/UX CateringBot Kelompok 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uiux.css">
+  <style>
+    .proto-layout { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; align-items: start; }
+    .stage { display: flex; justify-content: center; }
+    .side { position: sticky; top: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    /* Phone with internal scroll */
+    .wf-phone.proto { height: 680px; min-height: 0; padding: 14px 0 0; display: flex; flex-direction: column; }
+    .proto .wf-notch { flex: none; }
+    .screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
+    .screen.active { display: flex; }
+    .scr-head { flex: none; padding: 0 12px; }
+    .scr-body { flex: 1; overflow-y: auto; padding: 0 12px 16px; position: relative; }
+    .scr-foot { flex: none; padding: 8px 12px 14px; border-top: 2px solid var(--wf-ink); background: #fff; }
+    .scr-body::-webkit-scrollbar { width: 4px; } .scr-body::-webkit-scrollbar-thumb { background: var(--wf-line); }
+
+    /* Interactive states */
+    [data-hot] { cursor: pointer; }
+    button.wf-btn, button.wf-chip { cursor: pointer; }
+    button.wf-btn:disabled { opacity: .35; cursor: not-allowed; }
+    button.wf-chip:disabled { cursor: not-allowed; }
+    button.wf-chip.sel { background: var(--wf-ink); color: #fff; }
+    button.wf-btn:not(:disabled):active, button.wf-chip:not(:disabled):active { transform: scale(.97); }
+    .hl [data-hot] { outline: 3px solid rgba(245,158,11,.9); outline-offset: 2px; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 50% { outline-color: rgba(245,158,11,.25); } }
+
+    .proto input[type=text], .proto input[type=tel], .proto textarea {
+      width: 100%; border: 2px solid var(--wf-ink); border-radius: 6px; padding: 6px; font: inherit; color: var(--wf-ink); margin: 3px 0;
+    }
+    .proto textarea { resize: none; height: 46px; }
+    .warn { color: var(--red); font-weight: 700; font-size: 11px; min-height: 14px; }
+    .chat-input { display: flex; gap: 6px; }
+    .chat-input input { flex: 1; margin: 0 !important; }
+    .chat-input button { width: auto; margin: 0; padding: 6px 10px; }
+    .typing { font-style: italic; color: var(--wf-line); margin: 4px 0; }
+    .locked { opacity: .55; pointer-events: none; }
+
+    .overlay { position: absolute; inset: 0; background: rgba(255,255,255,.96); display: none; flex-direction: column; justify-content: center; padding: 24px; text-align: center; z-index: 5; }
+    .overlay.show { display: flex; }
+    .check { width: 64px; height: 64px; border: 3px solid var(--wf-ink); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+
+    .toast { position: absolute; left: 12px; right: 12px; bottom: 80px; background: var(--wf-ink); color: #fff; padding: 8px 10px; border-radius: 8px; font-size: 11px; display: none; z-index: 6; }
+    .toast.show { display: block; }
+
+    /* Side panel */
+    .screen-list button {
+      width: 100%; text-align: left; border: 1px solid var(--border); background: #fff; padding: .65rem .8rem; border-radius: 10px;
+      font: inherit; font-size: .9rem; cursor: pointer; margin-bottom: .45rem; display: flex; justify-content: space-between;
+    }
+    .screen-list button.on { border-color: var(--blue); background: #eff6ff; color: var(--blue); font-weight: 700; }
+    .flow-steps { list-style: none; font-size: .85rem; }
+    .flow-steps li { padding: .35rem .5rem; border-radius: 6px; color: var(--muted); }
+    .flow-steps li.done { color: #047857; }
+    .flow-steps li.done::before { content: "✓ "; }
+    .flow-steps li.now { background: #fffbeb; color: #92400e; font-weight: 700; }
+    .flow-steps li.now::before { content: "▶ "; }
+    .ctrl { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .ctrl button { font: inherit; font-size: .85rem; padding: .5rem .8rem; border-radius: 8px; border: 1px solid var(--border); background: #fff; cursor: pointer; }
+    .ctrl button.on { background: var(--amber); border-color: var(--amber); font-weight: 700; }
+
+    @media (max-width: 1000px) { .proto-layout { grid-template-columns: 1fr; } .side { position: static; } }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div class="inner">
+      <span class="crumb">Praktikum 4 · UI/UX · Tahap 4 dari 4</span>
+      <h1>Prototype Klik (Dibangun dari Wireframe)</h1>
+      <p>Prototype interaktif yang memakai komponen dan tata letak yang sama dengan <a href="wireframe.html" style="color:#7dd3fc;">wireframe</a>. Ikuti skenario Dewi: pesan 40 nasi kotak untuk rapat hari Sabtu.</p>
+      <nav class="step-nav" aria-label="Tahapan UI/UX">
+        <a href="../index.html">🌐 Web Utama</a>
+        <a href="index.html">🏠 Hub UI/UX</a>
+        <a href="persona.html">1. Persona</a>
+        <a href="user-flow.html">2. User Flow</a>
+        <a href="wireframe.html">3. Wireframe</a>
+        <a href="prototype.html" class="active">4. Prototype</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="proto-layout">
+      <div class="stage">
+        <div class="wf-phone proto" id="phone">
+          <div class="wf-notch"></div>
+
+          <!-- ================= SCREEN 1: BERANDA ================= -->
+          <section class="screen" id="scr-beranda" aria-label="Halaman 1 Beranda">
+            <div class="scr-head"><div class="wf-bar"><span>[LOGO] CateringBot</span><span>☰</span></div></div>
+            <div class="scr-body">
+              <div class="wf-box fill">
+                <div class="wf-h">Pesan Katering Tanpa Menunggu Balasan Admin</div>
+                <div>Pilih paket, cek tanggal, dan kirim pesanan dalam 3 menit — kapan saja.</div>
+                <button class="wf-btn" data-hot onclick="startChat()">💬 PESAN VIA CHATBOT</button>
+                <button class="wf-btn ghost" data-hot onclick="document.getElementById('paket-list').scrollIntoView({behavior:'smooth'})">Lihat Menu &amp; Harga</button>
+              </div>
+              <div class="wf-row" style="margin-bottom:8px; text-align:center; font-size:10px;">
+                <div class="wf-box" style="margin:0;">⚡ Respon<br>2,3 dtk</div>
+                <div class="wf-box" style="margin:0;">🕘 Buka<br>24 jam</div>
+                <div class="wf-box" style="margin:0;">📱 Tanpa<br>install</div>
+              </div>
+              <div class="wf-h" id="paket-list">Paket Populer</div>
+              <div id="paket-cards"></div>
+              <div class="wf-box dashed">
+                <b>Cara Pesan 3 Langkah</b>
+                <div>① Pilih paket ② Atur porsi &amp; tanggal ③ Kirim</div>
+              </div>
+              <div style="height:40px;"></div>
+            </div>
+            <button class="wf-fab" data-hot onclick="startChat()" aria-label="Buka chatbot" style="cursor:pointer; bottom:20px;">💬</button>
+          </section>
+
+          <!-- ================= SCREEN 2: CHATBOT ================= -->
+          <section class="screen" id="scr-chat" aria-label="Halaman 2 Chatbot Pemesanan">
+            <div class="scr-head">
+              <div class="wf-bar">
+                <span data-hot onclick="go('beranda')" role="button" tabindex="0">← Asisten Bu Sumiyati</span><span>● online</span>
+              </div>
+              <div class="wf-stepper" id="stepper">
+                <span>Paket</span><span>Porsi</span><span>Tanggal</span><span>Alamat</span>
+              </div>
+            </div>
+            <div class="scr-body" id="chat-body"></div>
+            <div class="scr-foot">
+              <form class="chat-input" onsubmit="sendText(event)">
+                <input type="text" id="chat-text" placeholder="Ketik pertanyaan atau alamat…" autocomplete="off" aria-label="Pesan">
+                <button class="wf-btn" type="submit" data-hot>Kirim</button>
+              </form>
+            </div>
+          </section>
+
+          <!-- ================= SCREEN 3: RINGKASAN ================= -->
+          <section class="screen" id="scr-ringkasan" aria-label="Halaman 3 Ringkasan dan Konfirmasi">
+            <div class="scr-head"><div class="wf-bar"><span data-hot onclick="go('chat')" role="button" tabindex="0">← Ringkasan Pesanan</span><span></span></div></div>
+            <div class="scr-body">
+              <div class="wf-box">
+                <div class="wf-row"><b id="r-paket">-</b><span style="text-align:right; text-decoration:underline;" data-hot onclick="ubah('paket')">Ubah</span></div>
+                <div class="wf-kv"><span id="r-qty">-</span><span id="r-sub">-</span></div>
+                <div class="wf-kv"><span>Ongkos kirim</span><span>Rp0 (dalam kota)</span></div>
+                <div class="wf-total"><span>TOTAL</span><span id="r-total">-</span></div>
+                <div class="wf-kv"><span>DP 30%</span><span id="r-dp">-</span></div>
+              </div>
+              <div class="wf-box">
+                <div class="wf-row"><b id="r-date">-</b><span style="text-align:right; text-decoration:underline;" data-hot onclick="ubah('tanggal')">Ubah</span></div>
+                <div class="wf-row"><span id="r-addr">-</span><span style="text-align:right; text-decoration:underline; flex:none;" data-hot onclick="ubah('alamat')">Ubah</span></div>
+              </div>
+              <div class="wf-box">
+                <b>Data Pemesan</b>
+                <input type="text" id="f-nama" placeholder="Nama lengkap" oninput="checkForm()" aria-label="Nama lengkap">
+                <input type="tel" id="f-wa" placeholder="No. WhatsApp (08…)" oninput="checkForm()" aria-label="Nomor WhatsApp">
+                <textarea id="f-note" placeholder="Catatan (opsional), mis. 5 porsi tanpa sambal" aria-label="Catatan"></textarea>
+              </div>
+              <label style="display:flex; gap:6px; align-items:flex-start; margin:6px 0;">
+                <input type="checkbox" id="f-agree" onchange="checkForm()" data-hot style="margin-top:2px;">
+                <span>Saya setuju membayar DP 30% setelah dikonfirmasi admin</span>
+              </label>
+              <div class="warn" id="f-warn">Lengkapi nama, no. WhatsApp, dan centang persetujuan.</div>
+              <button class="wf-btn" id="btn-kirim" disabled data-hot onclick="kirim()">KIRIM PESANAN KE WHATSAPP</button>
+              <button class="wf-btn ghost" data-hot onclick="go('chat')">Kembali ke Chat</button>
+            </div>
+
+            <div class="overlay" id="success" role="dialog" aria-label="Pesanan berhasil">
+              <div class="check">✓</div>
+              <div class="wf-h">Pesanan Terkirim!</div>
+              <div>No. Pesanan: <b id="s-id">ORD-0000</b></div>
+              <div class="wf-box fill" style="margin-top:10px; text-align:left;">
+                <div id="s-sum"></div>
+                <small>Admin Bu Sumiyati akan konfirmasi ≤ 15 menit via WhatsApp.</small>
+              </div>
+              <button class="wf-btn" data-hot onclick="toast('Simulasi: membuka WhatsApp dengan rincian pesanan.')">Buka WhatsApp</button>
+              <button class="wf-btn ghost" data-hot onclick="resetAll()">Kembali ke Beranda</button>
+            </div>
+          </section>
+
+          <div class="toast" id="toast"></div>
+        </div>
+      </div>
+
+      <!-- ================= SIDE PANEL ================= -->
+      <aside class="side">
+        <div class="card">
+          <b>Cara mencoba</b>
+          <p class="muted" style="font-size:.88rem; margin:.4rem 0 .8rem;">Klik elemen di dalam layar HP. Nyalakan "Tampilkan area klik" untuk melihat semua hotspot.</p>
+          <div class="ctrl">
+            <button id="btn-hl" onclick="toggleHL()">🟧 Tampilkan area klik</button>
+            <button onclick="resetAll()">↺ Ulang dari awal</button>
+          </div>
+        </div>
+        <div class="card screen-list">
+          <b style="display:block; margin-bottom:.6rem;">Halaman (dari wireframe)</b>
+          <button data-scr="beranda" onclick="go('beranda')">1. Beranda <span>→</span></button>
+          <button data-scr="chat" onclick="go('chat')">2. Chatbot Pemesanan <span>→</span></button>
+          <button data-scr="ringkasan" onclick="go('ringkasan')">3. Ringkasan &amp; Konfirmasi <span>→</span></button>
+        </div>
+        <div class="card">
+          <b>Posisi di User Flow</b>
+          <ol class="flow-steps" id="flow-steps" style="margin-top:.5rem;">
+            <li>1. Buka Beranda</li>
+            <li>2. Mulai pesan / pilih paket</li>
+            <li>3. Atur jumlah porsi</li>
+            <li>4. Pilih tanggal tersedia</li>
+            <li>5. Isi alamat</li>
+            <li>6. Periksa ringkasan &amp; isi data</li>
+            <li>7. Kirim → nomor pesanan</li>
+          </ol>
+        </div>
+        <div class="card" style="font-size:.85rem;">
+          <b>Skenario uji</b>
+          <ul class="clean" style="margin-top:.3rem;">
+            <li>Tap "Pesan" di kartu Nasi Kotak.</li>
+            <li>Coba turunkan porsi di bawah 20 → validasi muncul.</li>
+            <li>Coba tap tanggal "Penuh" → tidak bisa dipilih.</li>
+            <li>Ketik alamat, buka ringkasan, isi data, kirim.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="doc-footer">Praktikum 4 PAW · Kelompok 3 Kelas A · CateringBot Catering Bu Sumiyati</footer>
+
+  <script>
+    // ---------- Data ----------
+    const PAKET = [
+      { id: 'kotak', name: 'Nasi Kotak Reguler', short: 'Nasi Kotak', price: 25000, min: 20, unit: 'porsi' },
+      { id: 'prasmanan', name: 'Prasmanan Pesta', short: 'Prasmanan', price: 55000, min: 50, unit: 'porsi' },
+      { id: 'tumpeng', name: 'Tumpeng Nusantara', short: 'Tumpeng', price: 350000, min: 1, unit: 'nampan' },
+      { id: 'snack', name: 'Snack Box', short: 'Snack Box', price: 15000, min: 20, unit: 'box' }
+    ];
+    const TANGGAL = [
+      { label: 'Jum, 16 Okt', ok: true }, { label: 'Sab, 17 Okt', ok: true },
+      { label: 'Min, 18 Okt', ok: false }, { label: 'Sen, 19 Okt', ok: true }
+    ];
+    const DEFAULT = { paket: PAKET[0], porsi: 40, tanggal: 'Sab, 17 Okt', alamat: 'Kantor Koperasi, Jl. Sunan Muria No. 12, Kudus' };
+
+    let state = { paket: null, porsi: 0, tanggal: null, alamat: null, mode: null, flow: 1 };
+    const rp = n => 'Rp' + n.toLocaleString('id-ID');
+    const $ = id => document.getElementById(id);
+
+    // ---------- Navigation ----------
+    function showScreen(name) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      $('scr-' + name).classList.add('active');
+      document.querySelectorAll('.screen-list button').forEach(b => b.classList.toggle('on', b.dataset.scr === name));
+    }
+    function go(name) {
+      showScreen(name);
+      if (name === 'chat' && !$('chat-body').children.length) { startChat(); return; }
+      if (name === 'ringkasan') renderRingkasan();
+      if (name === 'beranda') setFlow(1);
+      history.replaceState(null, '', '#' + name);
+    }
+
+    function setFlow(n) {
+      state.flow = n;
+      document.querySelectorAll('#flow-steps li').forEach((li, i) => {
+        li.className = i + 1 < n ? 'done' : (i + 1 === n ? 'now' : '');
+      });
+    }
+
+    function setStepper(n) {
+      document.querySelectorAll('#stepper span').forEach((s, i) => s.classList.toggle('on', i < n));
+    }
+
+    function toggleHL() {
+      $('phone').classList.toggle('hl');
+      $('btn-hl').classList.toggle('on');
+    }
+
+    function toast(msg) {
+      const t = $('toast'); t.textContent = msg; t.classList.add('show');
+      clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // ---------- Beranda ----------
+    function renderPaketCards() {
+      $('paket-cards').innerHTML = PAKET.map(p => `
+        <div class="wf-box" style="display:flex; gap:8px; align-items:center;">
+          <div class="wf-img" style="height:52px; width:60px; flex:none;"></div>
+          <div style="flex:1;"><b>${p.short}</b><br>${rp(p.price)}/${p.unit}<br><small>min. ${p.min} ${p.unit}</small></div>
+          <button class="wf-btn" data-hot style="width:auto; padding:6px 10px;" onclick="startChat('${p.id}')">Pesan</button>
+        </div>`).join('');
+    }
+
+    // ---------- Chatbot ----------
+    const body = () => $('chat-body');
+    function scrollChat() { const b = body(); b.scrollTop = b.scrollHeight; }
+    function bot(html, delay = 450) {
+      return new Promise(res => {
+        const typing = document.createElement('div');
+        typing.className = 'typing'; typing.textContent = 'Asisten sedang mengetik…';
+        body().appendChild(typing); scrollChat();
+        setTimeout(() => {
+          typing.remove();
+          const d = document.createElement('div'); d.className = 'wf-bubble'; d.innerHTML = html;
+          body().appendChild(d); scrollChat(); res(d);
+        }, delay);
+      });
+    }
+    function me(text) {
+      const d = document.createElement('div'); d.className = 'wf-bubble me'; d.textContent = text;
+      body().appendChild(d); scrollChat();
+    }
+    function widget(html) {
+      const d = document.createElement('div'); d.innerHTML = html; body().appendChild(d); scrollChat(); return d;
+    }
+
+    async function startChat(preId) {
+      state = { paket: null, porsi: 0, tanggal: null, alamat: null, mode: null, flow: 2 };
+      body().innerHTML = '';
+      showScreen('chat');
+      history.replaceState(null, '', '#chat');
+      setFlow(2); setStepper(0);
+      await bot('Halo! 👋 Saya asisten <b>Catering Bu Sumiyati</b>. Mau pesan paket apa?', 300);
+      if (preId) { choosePaket(preId, true); return; }
+      const w = widget(PAKET.map(p => `<button class="wf-chip" data-hot onclick="choosePaket('${p.id}')">${p.short}</button>`).join('') +
+        `<div style="font-size:10px; color:var(--wf-line); margin-top:4px;">atau ketik pertanyaan, mis. "paket untuk rapat 40 orang"</div>`);
+      w.id = 'w-paket';
+    }
+
+    async function choosePaket(id, fromHome) {
+      const p = PAKET.find(x => x.id === id);
+      state.paket = p;
+      const w = $('w-paket'); if (w) w.classList.add('locked');
+      me(fromHome ? `Saya mau pesan ${p.short}` : p.short);
+      setStepper(1); setFlow(3);
+      state.porsi = Math.max(p.min, p.unit === 'nampan' ? 1 : 40);
+      await bot(`${p.name} — ${rp(p.price)}/${p.unit}. Berapa ${p.unit}? <b>(min. ${p.min})</b>`);
+      const wd = widget(`
+        <div class="wf-box" id="w-porsi">
+          <div class="wf-row" style="text-align:center;">
+            <button class="wf-btn ghost" data-hot style="margin:0;" onclick="porsi(-${p.unit === 'nampan' ? 1 : 5})">−</button>
+            <div style="font-size:18px; font-weight:700;"><span id="porsi-val">${state.porsi}</span><br><small>${p.unit}</small></div>
+            <button class="wf-btn ghost" data-hot style="margin:0;" onclick="porsi(${p.unit === 'nampan' ? 1 : 5})">+</button>
+          </div>
+          <div class="wf-kv"><span>Subtotal</span><b id="porsi-sub">${rp(state.porsi * p.price)}</b></div>
+          <div class="warn" id="porsi-warn"></div>
+          <button class="wf-btn" id="porsi-ok" data-hot onclick="confirmPorsi()">Lanjut</button>
+        </div>`);
+    }
+
+    function porsi(delta) {
+      const p = state.paket;
+      state.porsi = Math.max(1, state.porsi + delta);
+      $('porsi-val').textContent = state.porsi;
+      $('porsi-sub').textContent = rp(state.porsi * p.price);
+      const bad = state.porsi < p.min;
+      $('porsi-warn').textContent = bad ? `⚠ Minimal ${p.min} ${p.unit} untuk paket ini` : '';
+      $('porsi-ok').disabled = bad;
+    }
+
+    async function confirmPorsi() {
+      $('w-porsi').classList.add('locked');
+      me(`${state.porsi} ${state.paket.unit}`);
+      setStepper(2); setFlow(4);
+      await bot('Untuk tanggal berapa acaranya? Tanggal yang dicoret sudah penuh.');
+      const w = widget(TANGGAL.map(t => t.ok
+        ? `<button class="wf-chip" data-hot onclick="chooseDate('${t.label}')">${t.label} · ✓</button>`
+        : `<button class="wf-chip off" disabled title="Kuota dapur penuh">${t.label} · Penuh</button>`).join(''));
+      w.id = 'w-date';
+    }
+
+    async function chooseDate(label) {
+      state.tanggal = label;
+      $('w-date').classList.add('locked');
+      me(label);
+      setStepper(3); setFlow(5);
+      await bot(`✓ <b>${label}</b> tersedia. Terakhir, ketik <b>alamat pengiriman</b> di kolom bawah.`);
+      state.mode = 'alamat';
+      const inp = $('chat-text'); inp.placeholder = 'Ketik alamat pengiriman…'; inp.focus();
+      widget(`<button class="wf-chip" data-hot onclick="useSampleAddress()">📍 Pakai contoh alamat kantor</button>`).id = 'w-addr';
+    }
+
+    function useSampleAddress() { $('chat-text').value = DEFAULT.alamat; sendText(); }
+
+    async function sendText(e) {
+      if (e) e.preventDefault();
+      const inp = $('chat-text'); const text = inp.value.trim();
+      if (!text) return;
+      inp.value = '';
+      me(text);
+      if (state.mode === 'alamat') {
+        state.alamat = text; state.mode = null;
+        const w = $('w-addr'); if (w) w.remove();
+        inp.placeholder = 'Ketik pertanyaan atau alamat…';
+        setStepper(4); setFlow(6);
+        await bot('Siap! Data pesanan sudah lengkap. Silakan periksa ringkasannya.');
+        widget(`<button class="wf-btn" data-hot onclick="go('ringkasan')">LIHAT RINGKASAN PESANAN →</button>`);
+        return;
+      }
+      // Simulasi NLP sederhana untuk pertanyaan bebas
+      const t = text.toLowerCase();
+      if (!state.paket && /(harga|menu|paket|rapat|kantor|orang|murah)/.test(t)) {
+        await bot('Untuk acara kantor, paket yang paling sering dipesan:<br>• Nasi Kotak — Rp25.000/porsi (min. 20)<br>• Snack Box — Rp15.000/box (min. 20)<br>Silakan pilih chip di atas 👆');
+      } else if (/(tanggal|kapan|besok|sabtu)/.test(t)) {
+        await bot('Ketersediaan tanggal akan ditampilkan setelah Anda memilih paket dan jumlah porsi.');
+      } else if (/(bayar|dp|transfer)/.test(t)) {
+        await bot('Pembayaran DP 30% dilakukan setelah admin mengonfirmasi pesanan via WhatsApp.');
+      } else {
+        await bot('Maaf, saya belum paham. Coba pilih salah satu tombol yang tersedia, atau tanyakan soal harga, tanggal, atau pembayaran.');
+      }
+    }
+
+    // ---------- Ringkasan ----------
+    function current() {
+      return {
+        paket: state.paket || DEFAULT.paket,
+        porsi: state.porsi || DEFAULT.porsi,
+        tanggal: state.tanggal || DEFAULT.tanggal,
+        alamat: state.alamat || DEFAULT.alamat
+      };
+    }
+    function renderRingkasan() {
+      const c = current(); const total = c.porsi * c.paket.price;
+      $('r-paket').textContent = c.paket.name;
+      $('r-qty').textContent = `${c.porsi} ${c.paket.unit} × ${rp(c.paket.price)}`;
+      $('r-sub').textContent = rp(total);
+      $('r-total').textContent = rp(total);
+      $('r-dp').textContent = rp(Math.round(total * 0.3));
+      $('r-date').textContent = `📅 ${c.tanggal} · 11.00`;
+      $('r-addr').textContent = `📍 ${c.alamat}`;
+      setFlow(6); checkForm();
+    }
+    function checkForm() {
+      const nama = $('f-nama').value.trim(), wa = $('f-wa').value.replace(/\D/g, ''), ok = $('f-agree').checked;
+      let msg = '';
+      if (!nama) msg = 'Isi nama lengkap.';
+      else if (wa.length < 10) msg = 'No. WhatsApp minimal 10 digit.';
+      else if (!ok) msg = 'Centang persetujuan DP untuk melanjutkan.';
+      $('f-warn').textContent = msg;
+      $('btn-kirim').disabled = !!msg;
+    }
+    function ubah(bagian) {
+      const c = current();
+      if (bagian === 'paket') { startChat(); return; }
+      // kembali ke chat dengan paket yang sama untuk mengulang porsi/tanggal/alamat
+      startChat(c.paket.id);
+      toast(`Ubah ${bagian}: lanjutkan percakapan dari langkah porsi.`);
+    }
+    function kirim() {
+      const c = current(); const total = c.porsi * c.paket.price;
+      const id = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+      $('s-id').textContent = id;
+      $('s-sum').innerHTML = `${c.paket.short} · ${c.porsi} ${c.paket.unit}<br>${c.tanggal}<br><b>Total ${rp(total)}</b><br>`;
+      $('success').classList.add('show');
+      setFlow(8);
+    }
+    function resetAll() {
+      $('success').classList.remove('show');
+      ['f-nama', 'f-wa', 'f-note'].forEach(i => $(i).value = '');
+      $('f-agree').checked = false;
+      state = { paket: null, porsi: 0, tanggal: null, alamat: null, mode: null, flow: 1 };
+      body().innerHTML = ''; setStepper(0);
+      go('beranda');
+    }
+
+    // ---------- Init ----------
+    renderPaketCards();
+    const start = (location.hash || '#beranda').slice(1);
+    go(['beranda', 'chat', 'ringkasan'].includes(start) ? start : 'beranda');
+  </script>
+</body>
+</html>

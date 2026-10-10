@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dokumentasi Perancangan UI/UX CateringBot - Praktikum 4 Pemrograman Berbasis Web (PAW) Kelompok 3 Kelas A.">
+  <title>Praktikum 4: Perancangan UI/UX — CateringBot Kelompok 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uiux.css">
+  <style>
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #0284c7 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 2rem;
+    }
+    .hero-banner .inner { max-width: 1180px; margin: 0 auto; }
+    .badge-hub {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      padding: .35rem .85rem; border-radius: 999px; font-size: .82rem; font-weight: 700;
+      color: #7dd3fc; margin-bottom: 1rem;
+    }
+    .hero-banner h1 { font-size: 2.3rem; line-height: 1.2; margin-bottom: .75rem; font-weight: 800; }
+    .hero-banner p { font-size: 1.05rem; color: #cbd5e1; max-width: 780px; line-height: 1.6; }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .hub-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .hub-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sky);
+      box-shadow: 0 12px 24px -10px rgba(2, 132, 199, 0.25);
+    }
+    .hub-card .icon-box {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #eff6ff; color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1rem;
+    }
+    .hub-card h3 { font-size: 1.15rem; color: var(--navy); margin-bottom: .4rem; }
+    .hub-card p { font-size: .88rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
+    .hub-card .card-cta {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .85rem; font-weight: 700; color: var(--blue);
+    }
+
+    .copy-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      position: relative;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .88rem;
+      line-height: 1.7;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: .45rem .9rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: .8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .copy-btn:hover { background: #0369a1; }
+
+    .chain-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .chain-node {
+      flex: 1;
+      min-width: 180px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .chain-node b { display: block; color: var(--navy); font-size: .95rem; margin-bottom: .25rem; }
+    .chain-node span { font-size: .8rem; color: var(--muted); }
+    .chain-arrow { font-size: 1.4rem; color: var(--sky); font-weight: 800; }
+
+    @media (max-width: 960px) {
+      .nav-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .nav-grid { grid-template-columns: 1fr; }
+      .hero-banner h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero-banner">
+    <div class="inner">
+      <div class="badge-hub">
+        <span>📋 PPAW — TUGAS PRAKTIKUM 4</span>
+        <span>•</span>
+        <span>Kelompok 3 Kelas A</span>
+      </div>
+      <h1>Perancangan UI/UX: CateringBot AI</h1>
+      <p>
+        Solusi pemesanan katering mandiri berbasis web untuk UMKM <strong>Catering Bu Sumiyati</strong>.
+        Dirancang berdasarkan riset jurnal <em>"Rancang Bangun Aplikasi Chatbot pada Catering Makanan"</em> (Detika, 2025)
+        untuk menjawab masalah keterlambatan respon admin dan pesanan tercecer.
+      </p>
+      <div style="margin-top:1.5rem; display:flex; gap:.75rem; flex-wrap:wrap;">
+        <a href="../index.html" class="step-nav" style="text-decoration:none;">
+          <span style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3); padding:.5rem 1rem; border-radius:999px; font-weight:700; font-size:.85rem;">🌐 Kembali ke Website Utama</span>
+        </a>
+        <a href="#pengumpulan" class="step-nav" style="text-decoration:none;">
+          <span style="background:#fff; color:var(--blue); padding:.5rem 1rem; border-radius:999px; font-weight:700; font-size:.85rem;">📋 Format Pengumpulan Individu ↓</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 4 KOMPONEN UTAMA -->
+    <h2 class="sec"><span class="num">1</span> 4 Komponen Utama Perancangan</h2>
+    <p class="muted" style="margin-bottom:1.25rem;">
+      Setiap komponen dibuat sebagai halaman web mandiri dan saling terhubung secara konsisten:
+      <strong>Persona → User Flow → Wireframe 3 Halaman → Prototype Klik</strong>.
+    </p>
+
+    <div class="nav-grid">
+      <!-- TAHAP 1 -->
+      <a href="persona.html" class="hub-card">
+        <div>
+          <div class="icon-box">👤</div>
+          <span class="tag">Tahap 1</span>
+          <h3>Persona &amp; Masalah</h3>
+          <p>Identifikasi persona pengguna (Dewi, admin kantor), sasaran (goals), 5 pain points utama (P1–P5), skenario, dan pemetaan ke fitur solusi.</p>
+        </div>
+        <div class="card-cta">Buka Dokumen Persona →</div>
+      </a>
+
+      <!-- TAHAP 2 -->
+      <a href="user-flow.html" class="hub-card">
+        <div>
+          <div class="icon-box">🗺️</div>
+          <span class="tag">Tahap 2</span>
+          <h3>User Flow</h3>
+          <p>Diagram alur langkah Dewi dari membuka web hingga pesanan selesai melalui 3 halaman, dilengkapi tabel happy path dan penanganan error.</p>
+        </div>
+        <div class="card-cta">Buka User Flow →</div>
+      </a>
+
+      <!-- TAHAP 3 -->
+      <a href="wireframe.html" class="hub-card">
+        <div>
+          <div class="icon-box">📐</div>
+          <span class="tag">Tahap 3</span>
+          <h3>Wireframe 3 Halaman</h3>
+          <p>Rancangan low-fidelity grayscale (Beranda, Chatbot, Ringkasan) dengan anotasi bernomor yang menjelaskan alasan desain tiap elemen.</p>
+        </div>
+        <div class="card-cta">Buka Wireframe →</div>
+      </a>
+
+      <!-- TAHAP 4 -->
+      <a href="prototype.html" class="hub-card">
+        <div>
+          <div class="icon-box">📱</div>
+          <span class="tag">Tahap 4</span>
+          <h3>Prototype Klik</h3>
+          <p>Prototype interaktif mobile yang dapat diklik langsung, menggunakan layout wireframe, stepper dinamis, kalkulator harga, dan form ringkasan.</p>
+        </div>
+        <div class="card-cta">Coba Prototype Klik →</div>
+      </a>
+    </div>
+
+    <!-- KETERHUBUNGAN ALUR -->
+    <h2 class="sec"><span class="num">2</span> Alur Pengerjaan yang Saling Terhubung (Traceability)</h2>
+    <div class="chain-flow">
+      <div class="chain-node">
+        <b>1. Persona (Dewi)</b>
+        <span>Hambatan: P1 (admin lambat), P2 (harga tak jelas), P4 (pesanan tercecer)</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        <b>2. User Flow</b>
+        <span>Beranda (pilih paket) → Chat (atur porsi &amp; tanggal) → Ringkasan (konfirmasi)</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        <b>3. Wireframe</b>
+        <span>Struktur low-fidelity 3 layar dengan tombol aksi dan validasi inline</span>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        <b>4. Prototype</b>
+        <span>Interaksi klik langsung dengan alur data tersambung hingga nomor pesanan</span>
+      </div>
+    </div>
+
+    <!-- FORMAT PENGUMPULAN INDIVIDU -->
+    <h2 class="sec" id="pengumpulan"><span class="num">3</span> Format Pengumpulan Tugas Individu</h2>
+    <div class="card">
+      <p style="margin-bottom:.5rem;">
+        Sesuai instruksi tugas, pengumpulan dilakukan secara individu. Mahasiswa cukup menyalin tautan di bawah ini ke form pengumpulan:
+      </p>
+
+      <div class="copy-box">
+        <button class="copy-btn" onclick="copyLinks()">📋 Salin Teks</button>
+        <div id="copy-text">Link Persona : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/persona.html
+Link User Flow : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/user-flow.html
+Link Wireframe : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/wireframe.html
+Link Prototype dari Wireframe : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/prototype.html</div>
+      </div>
+      <div id="copy-status" style="margin-top:.5rem; font-size:.85rem; color:#047857; font-weight:700; display:none;">
+        ✓ Format tautan berhasil disalin ke clipboard!
+      </div>
+    </div>
+
+    <!-- INFORMASI KELOMPOK -->
+    <h2 class="sec"><span class="num">4</span> Informasi Kelompok &amp; Landasan Proyek</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-size:1.05rem; margin-bottom:.5rem;">👥 Kelompok 3 — Kelas A PAW</h3>
+        <ul class="clean">
+          <li><strong>Proyek:</strong> CateringBot (Aplikasi Pemesanan Katering UMKM Catering Bu Sumiyati)</li>
+          <li><strong>Mata Kuliah:</strong> Pemrograman Berbasis Web (PAW)</li>
+          <li><strong>Tugas:</strong> Praktikum 4 — Perancangan UI/UX (Pengumpulan Individu)</li>
+          <li><strong>Fokus Penilaian:</strong> Ketepatan rancangan dan pemecahan masalah pengguna, bukan keindahan visual semata.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="font-size:1.05rem; margin-bottom:.5rem;">📚 Landasan Riset Jurnal</h3>
+        <p style="font-size:.9rem; color:var(--text); line-height:1.6;">
+          <em>"Rancang Bangun Aplikasi Chatbot pada Catering Makanan Berbasis Web Menggunakan Metode Naïve Bayes"</em> (Detika, 2025).
+        </p>
+        <ul class="clean good" style="margin-top:.5rem; font-size:.88rem;">
+          <li>78% UMKM katering kewalahan membalas pertanyaan berulang pelanggan.</li>
+          <li>Chatbot mencapai akurasi intent 87% dan waktu respon rata-rata 2,3 detik.</li>
+          <li>Mengurangi waktu tunggu pelanggan dari hitungan jam menjadi instan 24 jam.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="doc-footer">
+    Praktikum 4 PAW · Kelompok 3 Kelas A · CateringBot Catering Bu Sumiyati ·
+    <a href="../index.html" style="color:inherit; text-decoration:underline;">Website Kelompok</a>
+  </footer>
+
+  <script>
+    function copyLinks() {
+      const text = document.getElementById('copy-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const s = document.getElementById('copy-status');
+        s.style.display = 'block';
+        setTimeout(() => s.style.display = 'none', 3000);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -38,12 +38,42 @@ Kelompok3/
 ├── landing-page.html           # Salinan kompatibilitas berkas landing page tugas sebelumnya
 ├── landing-layanan.html        # Landing Page Showcase Layanan & Pemesanan Catering Bu Sumiyati
 ├── style.css                   # Berkas CSS untuk landing page jurnal (Tugas 2)
+├── uiux/                       # [Tugas 4] Perancangan UI/UX CateringBot
+│   ├── index.html              # Hub & Portal Ringkasan UI/UX (Format Pengumpulan)
+│   ├── persona.html            # 1. Persona & Rumusan Masalah (Dewi - Admin Kantor)
+│   ├── user-flow.html          # 2. User Flow Pemesanan Melalui 3 Layar (Mermaid Diagram)
+│   ├── wireframe.html          # 3. Wireframe 3 Halaman Low-Fidelity Bernomor
+│   ├── prototype.html          # 4. Prototype Klik Interaktif Berbasis Wireframe
+│   └── uiux.css                # Stylesheet UI/UX & Komponen Wireframe Grayscale
 ├── images/
 │   ├── hero-catering-bot.jpg   # Aset visual hero section (CateringBot AI)
 │   └── system-architecture.jpg # Diagram arsitektur sistem 4-lapisan
 ├── detika,+15814_page6-11.pdf  # Berkas PDF jurnal referensi
+├── Presentasi_Diagram_Sistem_Kelompok3.pptx # Presentasi diagram sistem (Arsitektur, Use Case, Activity, Sequence, Class, ERD)
 └── README.md                   # Dokumentasi penugasan & panduan navigasi
 ```
+
+---
+
+## 🎨 Praktikum 4: Perancangan UI/UX (Pengumpulan Individu)
+
+Perancangan UI/UX solusi pemesanan mandiri CateringBot untuk UMKM Catering Bu Sumiyati, berfokus pada ketepatan rancangan dan pemecahan masalah pengguna, bukan keindahan visual semata.
+
+### 🔗 Format Pengumpulan Tugas Individu:
+```text
+Link Persona : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/persona.html
+Link User Flow : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/user-flow.html
+Link Wireframe : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/wireframe.html
+Link Prototype dari Wireframe : https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/prototype.html
+```
+*(Hub Ringkasan: [https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/](https://zowiedrid.github.io/PAW-Week2-Kelompok3-KelasA/uiux/))*
+
+### 4 Komponen Utama:
+1. **[Persona & Masalah](uiux/persona.html):** Menentukan profil Dewi Anggraini (staf admin koperasi, 32 thn), tujuan (goals), 5 pain points utama (P1–P5: admin WA lambat, harga tak transparan, ketersediaan tanggal tak pasti, rincian tercecer, enggan install app baru), How Might We statement, dan tabel pemetaan masalah ke solusi.
+2. **[User Flow](uiux/user-flow.html):** Diagram alur pemesanan katering dari membuka web di smartphone hingga pesanan terkirim via 3 layar terarah: **Beranda → Chatbot Pemesanan → Ringkasan & Konfirmasi**, dilengkapi tabel happy path dan penanganan alur alternatif/error.
+3. **[Wireframe 3 Halaman](uiux/wireframe.html):** Desain low-fidelity grayscale mobile-first untuk 3 layar dengan anotasi pin bernomor (`1` s.d. `6`) yang merinci alasan desain setiap elemen berdasarkan pain points persona.
+4. **[Prototype Klik](uiux/prototype.html):** Prototype interaktif yang dapat diklik langsung, menggunakan layout dan komponen wireframe, stepper dinamis, kalkulator harga, seleksi tanggal dengan status kuota, form ringkasan terintegrasi, dan generate nomor pesanan otomatis.
+
 
 ---
 

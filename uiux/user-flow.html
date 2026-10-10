@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="User flow pemesanan katering melalui CateringBot - Kelompok 3 PAW.">
+  <title>2. User Flow — UI/UX CateringBot Kelompok 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uiux.css">
+  <style>
+    .flow-wrap { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; overflow-x: auto; }
+    .mermaid { display: flex; justify-content: center; min-width: 640px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .85rem; margin-top: 1rem; }
+    .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+    .lg { width: 22px; height: 14px; border: 2px solid #334155; display: inline-block; }
+    .lg.oval { border-radius: 999px; background: #0f172a; border-color: #0f172a; }
+    .lg.p1 { background: #dbeafe; } .lg.p2 { background: #ede9fe; } .lg.p3 { background: #dcfce7; }
+    .lg.dia { transform: rotate(45deg); width: 13px; height: 13px; background: #fef3c7; }
+    .lg.sys { background: #f1f5f9; border-style: dashed; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div class="inner">
+      <span class="crumb">Praktikum 4 · UI/UX · Tahap 2 dari 4</span>
+      <h1>User Flow: Dewi Memesan 40 Nasi Kotak untuk Rapat Sabtu</h1>
+      <p>Alur langkah Dewi (persona utama) dari membuka website hingga pesanan terkirim ke pengelola. Alur ini melewati tepat 3 halaman yang menjadi wireframe.</p>
+      <nav class="step-nav" aria-label="Tahapan UI/UX">
+        <a href="../index.html">🌐 Web Utama</a>
+        <a href="index.html">🏠 Hub UI/UX</a>
+        <a href="persona.html">1. Persona</a>
+        <a href="user-flow.html" class="active">2. User Flow</a>
+        <a href="wireframe.html">3. Wireframe</a>
+        <a href="prototype.html">4. Prototype</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid-3">
+      <div class="card"><span class="tag">Aktor</span><p><b>Dewi Anggraini</b> — pelanggan (persona utama)</p></div>
+      <div class="card"><span class="tag green">Tujuan</span><p>Memesan katering untuk acara kantor dan mendapat nomor pesanan</p></div>
+      <div class="card"><span class="tag amber">Titik masuk</span><p>Link website dari Instagram / Google, dibuka di HP</p></div>
+    </div>
+
+    <h2 class="sec"><span class="num">A</span> Diagram User Flow</h2>
+    <div class="flow-wrap">
+<pre class="mermaid">
+flowchart TD
+  S([Mulai: Dewi membuka link website]):::term --> A1
+
+  subgraph P1["HALAMAN 1 — BERANDA"]
+    A1[Lihat hero + kartu paket berharga]:::p1 --> D1{Sudah tahu<br/>paket yang mau dipesan?}:::dec
+    D1 -- Ya --> A2[Tap 'Pesan' pada kartu paket]:::p1
+    D1 -- Belum --> A3[Tap 'Pesan via Chatbot']:::p1
+  end
+
+  A2 --> B2
+  A3 --> B1
+
+  subgraph P2["HALAMAN 2 — CHATBOT PEMESANAN"]
+    B1[Bot menyapa + chip pilihan paket]:::p2 --> B1a{Pilih chip atau<br/>ketik pertanyaan?}:::dec
+    B1a -- Ketik bebas --> N1[[NLP mengenali intent<br/>lalu tampilkan kartu menu]]:::sys --> B1
+    B1a -- Tap chip paket --> B2[Paket terpilih]:::p2
+    B2 --> B3[Atur jumlah porsi dengan stepper]:::p2
+    B3 --> D2{Porsi ≥ minimal order?}:::dec
+    D2 -- Tidak --> E1[Peringatan inline:<br/>'Minimal 20 porsi']:::err --> B3
+    D2 -- Ya --> B4[Pilih tanggal acara dari chip]:::p2
+    B4 --> D3{Tanggal tersedia?}:::dec
+    D3 -- Penuh --> E2[Chip nonaktif + saran<br/>tanggal terdekat]:::err --> B4
+    D3 -- Tersedia --> B5[Isi alamat pengiriman]:::p2
+    B5 --> B6[Tap 'Lihat Ringkasan Pesanan']:::p2
+  end
+
+  B6 --> C1
+
+  subgraph P3["HALAMAN 3 — RINGKASAN &amp; KONFIRMASI"]
+    C1[Periksa rincian paket, porsi,<br/>tanggal, alamat, total biaya]:::p3 --> D4{Data sudah benar?}:::dec
+    D4 -- Tidak --> C2[Tap 'Ubah']:::p3
+    D4 -- Ya --> C3[Isi nama + no. WhatsApp,<br/>centang persetujuan DP]:::p3
+    C3 --> C4[Tap 'Kirim Pesanan ke WhatsApp']:::p3
+    C4 --> N2[[Sistem simpan pesanan +<br/>kirim notifikasi ke admin]]:::sys
+    N2 --> C5[Tampil status berhasil +<br/>nomor pesanan]:::p3
+  end
+
+  C2 -. kembali ke langkah terkait .-> B3
+  C5 --> F([Selesai: pesanan tercatat,<br/>menunggu konfirmasi admin]):::term
+
+  classDef term fill:#0f172a,color:#fff,stroke:#0f172a;
+  classDef p1 fill:#dbeafe,stroke:#1e3a8a,color:#0f172a;
+  classDef p2 fill:#ede9fe,stroke:#6d28d9,color:#0f172a;
+  classDef p3 fill:#dcfce7,stroke:#047857,color:#0f172a;
+  classDef dec fill:#fef3c7,stroke:#b45309,color:#0f172a;
+  classDef sys fill:#f1f5f9,stroke:#64748b,stroke-dasharray:4 3,color:#334155;
+  classDef err fill:#fee2e2,stroke:#dc2626,color:#7f1d1d;
+</pre>
+      <div class="legend">
+        <span><i class="lg oval"></i> Mulai / Selesai</span>
+        <span><i class="lg p1"></i> Aksi di Halaman 1</span>
+        <span><i class="lg p2"></i> Aksi di Halaman 2</span>
+        <span><i class="lg p3"></i> Aksi di Halaman 3</span>
+        <span><i class="lg dia"></i> Keputusan</span>
+        <span><i class="lg sys"></i> Proses sistem</span>
+      </div>
+    </div>
+
+    <h2 class="sec"><span class="num">B</span> Rincian Langkah (Happy Path)</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Halaman</th><th>Aksi Dewi</th><th>Respon sistem</th><th>Pain point dijawab</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Beranda</td><td>Membuka website dari link Instagram</td><td>Tampil hero, tombol "Pesan via Chatbot", kartu paket dengan harga</td><td><span class="tag red">P2</span><span class="tag red">P5</span></td></tr>
+          <tr><td>2</td><td>Beranda</td><td>Tap "Pesan" pada kartu Nasi Kotak</td><td>Pindah ke Chatbot dengan paket sudah terpilih</td><td><span class="tag red">P1</span></td></tr>
+          <tr><td>3</td><td>Chatbot</td><td>Menaikkan porsi ke 40 dengan tombol +</td><td>Validasi minimal order (20) dan menampilkan subtotal berjalan</td><td><span class="tag red">P2</span></td></tr>
+          <tr><td>4</td><td>Chatbot</td><td>Tap chip "Sab, 17 Okt"</td><td>Chip berlabel "Tersedia"; tanggal penuh tidak bisa dipilih</td><td><span class="tag red">P3</span></td></tr>
+          <tr><td>5</td><td>Chatbot</td><td>Mengetik alamat kantor</td><td>Menampilkan tombol "Lihat Ringkasan Pesanan"</td><td><span class="tag red">P4</span></td></tr>
+          <tr><td>6</td><td>Ringkasan</td><td>Memeriksa rincian dan total biaya</td><td>Rincian harga, ongkir, total, dan DP 30% ditampilkan</td><td><span class="tag red">P2</span><span class="tag red">P4</span></td></tr>
+          <tr><td>7</td><td>Ringkasan</td><td>Isi nama &amp; no. WA, centang persetujuan, tap "Kirim"</td><td>Pesanan tersimpan, notifikasi ke admin, tampil nomor pesanan</td><td><span class="tag red">P1</span><span class="tag red">P4</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="sec"><span class="num">C</span> Alur Alternatif &amp; Penanganan Error</h2>
+    <div class="grid-3">
+      <div class="card"><b>Belum tahu paket</b><p class="muted">Dewi tap "Pesan via Chatbot" atau mengetik bebas ("ada paket buat rapat?"). NLP menampilkan kartu menu lalu kembali ke alur utama.</p></div>
+      <div class="card"><b>Porsi di bawah minimum</b><p class="muted">Tombol "Lanjut" nonaktif dan muncul pesan "Minimal 20 porsi". Error dicegah sebelum terjadi, tidak setelah dikirim.</p></div>
+      <div class="card"><b>Tanggal penuh / data salah</b><p class="muted">Chip tanggal penuh dicoret dan tidak bisa dipilih. Di Ringkasan, tombol "Ubah" membawa kembali ke langkah yang perlu diperbaiki.</p></div>
+    </div>
+
+    <div class="callout" style="margin-top:1.5rem;">
+      <b>Mengapa 3 halaman?</b> Alur sengaja dibatasi pada <b>Beranda → Chatbot → Ringkasan</b>. Seluruh pengisian data dilakukan dalam percakapan
+      (satu halaman) agar Dewi tidak berpindah-pindah formulir. Halaman Ringkasan dipisah karena di sinilah Dewi perlu melihat semua data sekaligus
+      sebelum berkomitmen (P4), dan memenuhi kebutuhan Bu Sumiyati akan pesanan yang lengkap.
+    </div>
+
+    <a class="next-link" href="wireframe.html">Lanjut ke 3. Wireframe →</a>
+  </main>
+
+  <footer class="doc-footer">Praktikum 4 PAW · Kelompok 3 Kelas A · CateringBot Catering Bu Sumiyati</footer>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'basis', htmlLabels: true },
+      themeVariables: { fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '14px', clusterBkg: '#f8fafc', clusterBorder: '#cbd5e1' } });
+  </script>
+</body>
+</html>

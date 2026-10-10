@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Persona dan rumusan masalah pengguna untuk rancangan UI/UX CateringBot - Kelompok 3 PAW.">
+  <title>1. Persona &amp; Masalah — UI/UX CateringBot Kelompok 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uiux.css">
+  <style>
+    .persona-top { display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem; align-items: start; }
+    .avatar {
+      width: 100%; aspect-ratio: 1; border-radius: 16px; background: linear-gradient(135deg, #1e3a8a, #38bdf8);
+      color: #fff; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: 800;
+    }
+    .facts { margin-top: 1rem; font-size: .9rem; }
+    .facts div { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding: .35rem 0; }
+    .facts b { color: var(--navy); }
+    .quote { font-size: 1.15rem; font-style: italic; color: var(--blue); border-left: 4px solid var(--sky); padding-left: 1rem; margin: .5rem 0 1rem; }
+    .meter { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: .25rem 0 .6rem; }
+    .meter span { display: block; height: 100%; background: var(--sky); }
+    .hmw { font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+    @media (max-width: 900px) { .persona-top { grid-template-columns: 1fr; } .avatar { max-width: 200px; } }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div class="inner">
+      <span class="crumb">Praktikum 4 · UI/UX · Tahap 1 dari 4</span>
+      <h1>Persona &amp; Rumusan Masalah</h1>
+      <p>Siapa pengguna utama CateringBot dan masalah apa yang perlu diselesaikan. Semua keputusan desain di tahap berikutnya merujuk ke halaman ini.</p>
+      <nav class="step-nav" aria-label="Tahapan UI/UX">
+        <a href="../index.html">🌐 Web Utama</a>
+        <a href="index.html">🏠 Hub UI/UX</a>
+        <a href="persona.html" class="active">1. Persona</a>
+        <a href="user-flow.html">2. User Flow</a>
+        <a href="wireframe.html">3. Wireframe</a>
+        <a href="prototype.html">4. Prototype</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="callout blue">
+      <strong>Konteks proyek:</strong> CateringBot adalah chatbot pemesanan katering berbasis web untuk UMKM <em>Catering Bu Sumiyati</em>,
+      dibangun dari jurnal <em>"Rancang Bangun Aplikasi Chatbot pada Catering Makanan"</em> (Detika, 2025). Data riset jurnal: 78% UMKM kewalahan
+      melayani pertanyaan pelanggan secara konstan; chatbot mencapai akurasi intent 87% dan respon rata-rata 2,3 detik.
+    </div>
+
+    <!-- PERSONA UTAMA -->
+    <h2 class="sec"><span class="num">A</span> Persona Utama — Pelanggan</h2>
+    <section class="card">
+      <div class="persona-top">
+        <div>
+          <div class="avatar" aria-hidden="true">DA</div>
+          <div class="facts">
+            <div><span>Nama</span><b>Dewi Anggraini</b></div>
+            <div><span>Usia</span><b>32 tahun</b></div>
+            <div><span>Pekerjaan</span><b>Staf Admin &amp; Umum</b></div>
+            <div><span>Tempat kerja</span><b>Kantor koperasi, Kudus</b></div>
+            <div><span>Perangkat</span><b>HP Android (RAM 3 GB)</b></div>
+            <div><span>Aplikasi harian</span><b>WhatsApp, Instagram</b></div>
+            <div><span>Frekuensi pesan katering</span><b>2–3× / bulan</b></div>
+          </div>
+        </div>
+        <div>
+          <p class="quote">"Saya cuma mau tahu harga, apakah tanggalnya bisa, lalu pesan. Tapi admin katering sering baru balas besok pagi."</p>
+          <p>
+            Dewi bertugas mengurus konsumsi untuk rapat bulanan, pelatihan, dan acara kantor (20–80 orang). Pesanan biasanya mendadak —
+            diminta atasan H-3 sampai H-1. Ia memesan lewat HP di sela pekerjaan, sering di luar jam kerja katering. Ia harus melaporkan
+            rincian biaya ke bagian keuangan sebelum pesanan disetujui.
+          </p>
+
+          <div class="grid-2" style="margin-top:1.25rem;">
+            <div>
+              <h3 style="font-size:1rem; margin-bottom:.4rem;">🎯 Tujuan (Goals)</h3>
+              <ul class="clean good">
+                <li>Mendapat daftar menu dan harga per porsi dengan cepat.</li>
+                <li>Memastikan tanggal acara masih bisa dilayani.</li>
+                <li>Mengetahui total biaya pasti untuk laporan ke keuangan.</li>
+                <li>Mendapat bukti pesanan yang jelas (nomor pesanan).</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="font-size:1rem; margin-bottom:.4rem;">😣 Hambatan (Pain Points)</h3>
+              <ul class="clean bad">
+                <li><b>P1</b> Balasan admin WhatsApp lambat, terutama malam/akhir pekan.</li>
+                <li><b>P2</b> Harga dan minimal order tidak tercantum jelas, harus bertanya berulang.</li>
+                <li><b>P3</b> Tidak tahu apakah tanggal masih tersedia sebelum bertanya.</li>
+                <li><b>P4</b> Rincian pesanan tercecer di chat, rawan salah porsi/alamat.</li>
+                <li><b>P5</b> Enggan mengunduh aplikasi baru hanya untuk memesan.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:1rem;">
+            <div>
+              <h3 style="font-size:1rem; margin-bottom:.4rem;">📱 Kemampuan Digital</h3>
+              <small class="muted">Penggunaan smartphone</small><div class="meter"><span style="width:85%"></span></div>
+              <small class="muted">Belanja / pesan online</small><div class="meter"><span style="width:65%"></span></div>
+              <small class="muted">Kesabaran mengetik panjang</small><div class="meter"><span style="width:30%"></span></div>
+            </div>
+            <div>
+              <h3 style="font-size:1rem; margin-bottom:.4rem;">🧠 Perilaku</h3>
+              <ul class="clean">
+                <li>Lebih suka menekan pilihan daripada mengetik panjang.</li>
+                <li>Membandingkan harga sebelum memutuskan.</li>
+                <li>Percaya jika ada konfirmasi tertulis via WhatsApp.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERSONA SEKUNDER -->
+    <h2 class="sec"><span class="num">B</span> Persona Sekunder — Pengelola UMKM</h2>
+    <section class="card">
+      <div class="grid-2">
+        <div>
+          <p><b>Bu Sumiyati, 51 tahun</b> — pemilik Catering Bu Sumiyati, dibantu 1 admin dan 4 juru masak.</p>
+          <p class="quote" style="font-size:1rem;">"Waktu saya habis membalas pertanyaan yang sama: harganya berapa, bisa tanggal sekian?"</p>
+        </div>
+        <div>
+          <ul class="clean bad">
+            <li>Pertanyaan berulang menyita waktu produksi dapur.</li>
+            <li>Pesanan masuk tidak lengkap (porsi/alamat/tanggal) sehingga harus ditanya ulang.</li>
+          </ul>
+          <ul class="clean good">
+            <li>Butuh pesanan yang sudah lengkap &amp; terstruktur langsung masuk ke WhatsApp.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:.75rem; font-size:.9rem;">Persona sekunder tidak menjadi fokus wireframe, tetapi kebutuhannya (pesanan lengkap terstruktur) menjadi syarat pada halaman Ringkasan.</p>
+    </section>
+
+    <!-- SKENARIO -->
+    <h2 class="sec"><span class="num">C</span> Skenario Penggunaan</h2>
+    <section class="card">
+      <p>
+        <b>Kamis, 20.30.</b> Atasan Dewi meminta konsumsi untuk <b>rapat anggota hari Sabtu, 40 orang</b>. Dewi membuka link Catering Bu Sumiyati
+        dari Instagram. Ia ingin dalam beberapa menit sudah tahu paket yang cocok, total biayanya, dan kepastian bahwa tanggal Sabtu bisa dilayani,
+        lalu mengirim pesanan yang langsung diterima admin — tanpa harus menunggu balasan besok pagi.
+      </p>
+    </section>
+
+    <!-- PROBLEM STATEMENT -->
+    <h2 class="sec"><span class="num">D</span> Rumusan Masalah</h2>
+    <section class="card">
+      <p class="muted" style="margin-bottom:.4rem;">Problem statement</p>
+      <p style="margin-bottom:1rem;">
+        Dewi, staf admin yang memesan katering secara mendadak untuk acara kantor, <b>membutuhkan cara mengetahui harga, ketersediaan tanggal,
+        dan total biaya lalu memesan secara mandiri kapan saja</b>, karena admin katering sering lambat membalas dan informasinya tidak tercantum jelas.
+      </p>
+      <p class="muted" style="margin-bottom:.4rem;">How Might We</p>
+      <p class="hmw">"Bagaimana kita membantu Dewi menyelesaikan pemesanan katering dalam kurang dari 3 menit, dengan harga yang jelas dan pesanan yang pasti terkirim lengkap ke pengelola?"</p>
+    </section>
+
+    <!-- MAPPING -->
+    <h2 class="sec"><span class="num">E</span> Pemetaan Masalah → Solusi → Halaman</h2>
+    <p class="muted" style="margin-bottom:.75rem;">Tabel ini menjadi jembatan ke User Flow dan Wireframe. Setiap fitur harus menjawab minimal satu pain point.</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Pain point</th><th>Kebutuhan</th><th>Solusi desain</th><th>Halaman</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag red">P1</span> Balasan admin lambat</td><td>Dilayani 24 jam tanpa menunggu</td><td>Tombol utama "Pesan via Chatbot" di Beranda; chatbot menjawab instan</td><td>Beranda, Chatbot</td></tr>
+          <tr><td><span class="tag red">P2</span> Harga tidak jelas</td><td>Harga &amp; minimal order terlihat sejak awal</td><td>Kartu paket menampilkan harga/porsi dan min. order; kartu menu di dalam chat</td><td>Beranda, Chatbot</td></tr>
+          <tr><td><span class="tag red">P3</span> Tidak tahu tanggal tersedia</td><td>Kepastian slot sebelum isi data</td><td>Pilihan tanggal dengan status "Tersedia / Penuh"</td><td>Chatbot</td></tr>
+          <tr><td><span class="tag red">P4</span> Rincian tercecer, rawan salah</td><td>Rekap tunggal yang bisa diperiksa</td><td>Halaman Ringkasan dengan rincian biaya, tombol "Ubah", dan nomor pesanan</td><td>Ringkasan</td></tr>
+          <tr><td><span class="tag red">P5</span> Malas install aplikasi</td><td>Akses langsung dari browser</td><td>Web responsif mobile-first; konfirmasi akhir lewat WhatsApp yang sudah dipakai</td><td>Semua</td></tr>
+          <tr><td><span class="tag amber">Kesabaran mengetik rendah</span></td><td>Input minim ketik</td><td>Quick-reply chip, stepper jumlah porsi, chip tanggal; ketik bebas tetap bisa (NLP)</td><td>Chatbot</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="sec"><span class="num">F</span> Kriteria Keberhasilan</h2>
+    <div class="grid-3">
+      <div class="card"><b>⏱ ≤ 3 menit</b><p class="muted">dari membuka Beranda hingga pesanan terkirim.</p></div>
+      <div class="card"><b>✍️ ≤ 1 kali mengetik panjang</b><p class="muted">hanya untuk alamat; sisanya dengan tap.</p></div>
+      <div class="card"><b>✅ 0 pertanyaan ulang</b><p class="muted">pesanan yang diterima admin sudah lengkap.</p></div>
+    </div>
+
+    <a class="next-link" href="user-flow.html">Lanjut ke 2. User Flow →</a>
+  </main>
+
+  <footer class="doc-footer">Praktikum 4 PAW · Kelompok 3 Kelas A · CateringBot Catering Bu Sumiyati</footer>
+</body>
+</html>
