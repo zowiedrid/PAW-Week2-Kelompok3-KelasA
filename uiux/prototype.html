@@ -49,9 +49,110 @@
     .check { width: 64px; height: 64px; border: 3px solid var(--wf-ink); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
 
     .toast { position: absolute; left: 12px; right: 12px; bottom: 80px; background: var(--wf-ink); color: #fff; padding: 8px 10px; border-radius: 8px; font-size: 11px; display: none; z-index: 6; }
-    .toast.show { display: block; }
-
     /* Side panel */
+    .btn-autoplay-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 2px solid var(--sky);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .btn-autoplay-main {
+      width: 100%;
+      background: var(--sky);
+      color: #fff;
+      border: 2px solid #0369a1;
+      padding: .85rem;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: .95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      transition: all .2s ease;
+    }
+    .btn-autoplay-main:hover { background: #0284c7; transform: translateY(-2px); }
+    .btn-autoplay-main.running { background: var(--red); border-color: #991b1b; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+
+    /* Virtual Cursor & Auto-Play Overlay */
+    .virtual-cursor {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 100;
+      transition: left 0.5s cubic-bezier(0.25, 1, 0.5, 1), top 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      display: none;
+      transform: translate(-50%, -50%);
+    }
+    .virtual-cursor.active { display: block; }
+    .cursor-pointer {
+      font-size: 28px;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+      transition: transform 0.15s ease;
+    }
+    .virtual-cursor.clicking .cursor-pointer {
+      transform: scale(0.75) translate(3px, 3px);
+    }
+    .cursor-ripple {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      background: rgba(2, 132, 199, 0.45);
+      border: 2px solid #0284c7;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .virtual-cursor.clicking .cursor-ripple {
+      animation: apRipple 0.5s ease-out;
+    }
+    @keyframes apRipple {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+    }
+
+    .autoplay-banner {
+      position: absolute;
+      top: 20px;
+      left: 10px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.95);
+      color: #fff;
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 80;
+      font-size: 11px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .autoplay-banner.show { display: flex; }
+    .ap-info { display: flex; align-items: center; gap: 6px; font-weight: 700; color: #7dd3fc; font-family: var(--font); }
+    .ap-pulse { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: apPulse 1.2s infinite; }
+    @keyframes apPulse { 50% { opacity: 0.3; } }
+    .ap-actions { display: flex; gap: 4px; }
+    .ap-actions button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ap-actions button:hover { background: rgba(255,255,255,0.35); }
+
     .screen-list button {
       width: 100%; text-align: left; border: 1px solid var(--border); background: #fff; padding: .65rem .8rem; border-radius: 10px;
       font: inherit; font-size: .9rem; cursor: pointer; margin-bottom: .45rem; display: flex; justify-content: space-between;
@@ -92,6 +193,22 @@
       <div class="stage">
         <div class="wf-phone proto" id="phone">
           <div class="wf-notch"></div>
+
+          <!-- Virtual Touch Cursor & Autoplay Banner -->
+          <div id="virtual-cursor" class="virtual-cursor" aria-hidden="true">
+            <div class="cursor-pointer">👆</div>
+            <div class="cursor-ripple"></div>
+          </div>
+          <div id="autoplay-banner" class="autoplay-banner">
+            <div class="ap-info">
+              <span class="ap-pulse"></span>
+              <span id="ap-label">Mode Otomatis Aktif...</span>
+            </div>
+            <div class="ap-actions">
+              <button id="btn-ap-pause" onclick="togglePauseAutoPlay()">⏸ Jeda</button>
+              <button onclick="stopAutoPlay()">⏹ Berhenti</button>
+            </div>
+          </div>
 
           <!-- ================= SCREEN 1: BERANDA ================= -->
           <section class="screen" id="scr-beranda" aria-label="Halaman 1 Beranda">
@@ -187,8 +304,30 @@
 
       <!-- ================= SIDE PANEL ================= -->
       <aside class="side">
+        <!-- KONTROL DEMO OTOMATIS -->
+        <div class="btn-autoplay-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem;">
+            <b style="color:var(--blue); font-size:1.05rem;">🤖 Mode Otomatis</b>
+            <span class="tag green" style="margin:0;">Hands-Free</span>
+          </div>
+          <p class="muted" style="font-size:.85rem; margin-bottom:.85rem; color:#334155; line-height:1.5;">
+            <strong>Tidak perlu klik manual!</strong> Klik tombol di bawah untuk melihat skenario Dewi (40 nasi kotak, tanggal 17 Okt) dijalankan secara otomatis dari Beranda hingga nomor pesanan terbit.
+          </p>
+          <button id="btn-autoplay-main" class="btn-autoplay-main" onclick="startAutoPlay()">
+            ▶️ Putar Demo Otomatis
+          </button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:.75rem; font-size:.82rem;">
+            <span class="muted" style="font-weight:600;">Kecepatan:</span>
+            <div style="display:flex; gap:5px;">
+              <button class="wf-chip sel" id="spd-1" onclick="setApSpeed(1)">1x</button>
+              <button class="wf-chip" id="spd-15" onclick="setApSpeed(1.5)">1.5x</button>
+              <button class="wf-chip" id="spd-2" onclick="setApSpeed(2)">2x</button>
+            </div>
+          </div>
+        </div>
+
         <div class="card">
-          <b>Cara mencoba</b>
+          <b>Opsi Manual</b>
           <p class="muted" style="font-size:.88rem; margin:.4rem 0 .8rem;">Klik elemen di dalam layar HP. Nyalakan "Tampilkan area klik" untuk melihat semua hotspot.</p>
           <div class="ctrl">
             <button id="btn-hl" onclick="toggleHL()">🟧 Tampilkan area klik</button>
@@ -455,6 +594,7 @@
       setFlow(8);
     }
     function resetAll() {
+      if (apState.running) stopAutoPlay();
       $('success').classList.remove('show');
       ['f-nama', 'f-wa', 'f-note'].forEach(i => $(i).value = '');
       $('f-agree').checked = false;
@@ -463,10 +603,258 @@
       go('beranda');
     }
 
+    // ---------- Auto-Play Demo Engine (Hands-Free) ----------
+    let apState = { running: false, paused: false, stopped: false, speed: 1 };
+
+    function setApSpeed(val) {
+      apState.speed = val;
+      ['spd-1', 'spd-15', 'spd-2'].forEach(id => {
+        const btn = $(id);
+        if (btn) btn.classList.toggle('sel', (id === 'spd-1' && val === 1) || (id === 'spd-15' && val === 1.5) || (id === 'spd-2' && val === 2));
+      });
+      toast(`Kecepatan demo diubah ke ${val}x`);
+    }
+
+    function apWait(ms) {
+      return new Promise(resolve => {
+        const target = ms / (apState.speed || 1);
+        let elapsed = 0;
+        const interval = setInterval(() => {
+          if (apState.stopped) { clearInterval(interval); resolve(); return; }
+          if (!apState.paused) {
+            elapsed += 50;
+            if (elapsed >= target) { clearInterval(interval); resolve(); }
+          }
+        }, 50);
+      });
+    }
+
+    function updateApStatus(text) {
+      const el = $('ap-label');
+      if (el) el.textContent = text;
+    }
+
+    function getRelativePos(target) {
+      const phone = $('phone');
+      const phoneRect = phone.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      return {
+        x: Math.round(targetRect.left - phoneRect.left + (targetRect.width / 2)),
+        y: Math.round(targetRect.top - phoneRect.top + (targetRect.height / 2))
+      };
+    }
+
+    async function moveCursorTo(target, waitBefore = 250) {
+      if (!target || apState.stopped) return;
+      await apWait(waitBefore);
+      if (apState.stopped) return;
+      const cur = $('virtual-cursor');
+      const pos = getRelativePos(target);
+      cur.style.left = pos.x + 'px';
+      cur.style.top = pos.y + 'px';
+      await apWait(500);
+    }
+
+    async function moveCursorAndClick(target, waitBefore = 250) {
+      if (!target || apState.stopped) return;
+      await moveCursorTo(target, waitBefore);
+      if (apState.stopped) return;
+      const cur = $('virtual-cursor');
+      cur.classList.add('clicking');
+      await apWait(180);
+      target.click();
+      await apWait(200);
+      cur.classList.remove('clicking');
+    }
+
+    async function typeInto(input, text, delayMs = 30) {
+      if (!input || apState.stopped) return;
+      input.value = '';
+      input.focus();
+      for (let i = 0; i < text.length; i++) {
+        if (apState.stopped) break;
+        input.value += text[i];
+        input.dispatchEvent(new Event('input'));
+        await apWait(delayMs);
+      }
+      await apWait(200);
+    }
+
+    function togglePauseAutoPlay() {
+      apState.paused = !apState.paused;
+      const btn = $('btn-ap-pause');
+      if (btn) btn.textContent = apState.paused ? '▶ Lanjut' : '⏸ Jeda';
+      toast(apState.paused ? 'Demo dijeda' : 'Demo dilanjutkan');
+    }
+
+    function stopAutoPlay() {
+      apState.stopped = true;
+      apState.running = false;
+      apState.paused = false;
+      $('autoplay-banner').classList.remove('show');
+      $('virtual-cursor').classList.remove('active');
+      const btn = $('btn-autoplay-main');
+      if (btn) {
+        btn.textContent = '▶️ Putar Demo Otomatis';
+        btn.onclick = startAutoPlay;
+        btn.classList.remove('running');
+      }
+    }
+
+    async function startAutoPlay() {
+      if (apState.running) return;
+      
+      // Reset state ke awal
+      $('success').classList.remove('show');
+      ['f-nama', 'f-wa', 'f-note'].forEach(i => $(i).value = '');
+      $('f-agree').checked = false;
+      state = { paket: null, porsi: 0, tanggal: null, alamat: null, mode: null, flow: 1 };
+      body().innerHTML = ''; setStepper(0);
+      go('beranda');
+
+      apState.running = true;
+      apState.stopped = false;
+      apState.paused = false;
+
+      $('autoplay-banner').classList.add('show');
+      $('btn-ap-pause').style.display = 'inline-block';
+      $('btn-ap-pause').textContent = '⏸ Jeda';
+      const cur = $('virtual-cursor');
+      cur.classList.add('active');
+      cur.style.left = '50%';
+      cur.style.top = '50%';
+
+      const mainBtn = $('btn-autoplay-main');
+      if (mainBtn) {
+        mainBtn.textContent = '⏹ Hentikan Demo';
+        mainBtn.onclick = stopAutoPlay;
+        mainBtn.classList.add('running');
+      }
+
+      // 1. Beranda -> Pilih Nasi Kotak
+      updateApStatus('1/7: Membuka Beranda & Memilih Paket Nasi Kotak...');
+      await apWait(600);
+      if (apState.stopped) return;
+
+      const firstPaketBtn = document.querySelector('#paket-cards .wf-btn');
+      if (firstPaketBtn) {
+        firstPaketBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await apWait(450);
+        await moveCursorAndClick(firstPaketBtn);
+      } else {
+        await moveCursorAndClick(document.querySelector('#scr-beranda .wf-btn'));
+      }
+      if (apState.stopped) return;
+
+      // 2. Chatbot -> Atur Porsi (40 Porsi)
+      updateApStatus('2/7: Menyesuaikan Jumlah Porsi (40 Porsi)...');
+      await apWait(1400); // tunggu pesan pembuka bot
+      if (apState.stopped) return;
+
+      const porsiBox = $('w-porsi');
+      if (porsiBox) {
+        porsiBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await apWait(350);
+      }
+      const okPorsiBtn = $('porsi-ok');
+      if (okPorsiBtn) {
+        await moveCursorAndClick(okPorsiBtn);
+      }
+      if (apState.stopped) return;
+
+      // 3. Chatbot -> Pilih Tanggal (Sabtu, 17 Okt)
+      updateApStatus('3/7: Memilih Tanggal Acara (Sab, 17 Okt)...');
+      await apWait(1400); // tunggu bot
+      if (apState.stopped) return;
+
+      const dateChips = document.querySelectorAll('#w-date button.wf-chip:not(.off)');
+      const targetDate = Array.from(dateChips).find(c => c.textContent.includes('Sab')) || dateChips[0];
+      if (targetDate) {
+        await moveCursorAndClick(targetDate);
+      }
+      if (apState.stopped) return;
+
+      // 4. Chatbot -> Alamat Pengiriman
+      updateApStatus('4/7: Memasukkan Alamat Pengiriman Kantor...');
+      await apWait(1400); // tunggu bot
+      if (apState.stopped) return;
+
+      const sampleAddrBtn = document.querySelector('#w-addr button');
+      if (sampleAddrBtn) {
+        await moveCursorAndClick(sampleAddrBtn);
+      } else {
+        const inp = $('chat-text');
+        await moveCursorTo(inp);
+        await typeInto(inp, DEFAULT.alamat, 25);
+        await moveCursorAndClick(document.querySelector('.chat-input button'));
+      }
+      if (apState.stopped) return;
+
+      // 5. Chatbot -> Buka Ringkasan
+      updateApStatus('5/7: Membuka Halaman Ringkasan & Konfirmasi...');
+      await apWait(1200); // tunggu bot
+      if (apState.stopped) return;
+
+      const gotoRingkasan = document.querySelector('#chat-body .wf-btn:last-child');
+      if (gotoRingkasan) {
+        gotoRingkasan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await apWait(400);
+        await moveCursorAndClick(gotoRingkasan);
+      } else {
+        go('ringkasan');
+      }
+      if (apState.stopped) return;
+
+      // 6. Ringkasan -> Isi Data Pemesan & Centang Persetujuan DP
+      updateApStatus('6/7: Mengisi Data Dewi & Persetujuan DP 30%...');
+      await apWait(700);
+      if (apState.stopped) return;
+
+      const inputNama = $('f-nama');
+      await moveCursorTo(inputNama);
+      await typeInto(inputNama, 'Dewi Anggraini', 30);
+      if (apState.stopped) return;
+
+      const inputWa = $('f-wa');
+      await moveCursorTo(inputWa);
+      await typeInto(inputWa, '081234567890', 30);
+      if (apState.stopped) return;
+
+      const agreeCheckbox = $('f-agree');
+      await moveCursorAndClick(agreeCheckbox);
+      agreeCheckbox.checked = true;
+      checkForm();
+      await apWait(600);
+      if (apState.stopped) return;
+
+      // 7. Ringkasan -> Kirim Pesanan
+      updateApStatus('7/7: Mengirim Pesanan ke WhatsApp & Selesai!');
+      const btnKirim = $('btn-kirim');
+      await moveCursorAndClick(btnKirim);
+      await apWait(700);
+
+      // Selesai!
+      cur.classList.remove('active');
+      updateApStatus('✅ Selesai! Pesanan berhasil dikirim (ORD-XXXX)');
+      $('btn-ap-pause').style.display = 'none';
+      toast('🎉 Demo Otomatis Berhasil Selesai!');
+      if (mainBtn) {
+        mainBtn.textContent = '▶️ Putar Ulang Demo';
+        mainBtn.onclick = startAutoPlay;
+        mainBtn.classList.remove('running');
+      }
+      apState.running = false;
+    }
+
     // ---------- Init ----------
     renderPaketCards();
     const start = (location.hash || '#beranda').slice(1);
     go(['beranda', 'chat', 'ringkasan'].includes(start) ? start : 'beranda');
+
+    // Auto-start jika parameter URL menyertakan autoplay
+    if (location.search.includes('autoplay') || location.hash === '#autoplay') {
+      setTimeout(() => startAutoPlay(), 900);
+    }
   </script>
 </body>
 </html>
